@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nocturna — soukromá seznamka</title>
+  <style>
+    :root {
+      --bg: #09080d;
+      --panel: #14121a;
+      --panel-2: #1b1822;
+      --line: rgba(255,255,255,.08);
+      --text: #f5f2f7;
+      --muted: #a59eae;
+      --accent: #d94675;
+      --accent-2: #8b5cf6;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 10%, rgba(217,70,117,.15), transparent 32%),
+        radial-gradient(circle at 85% 0%, rgba(139,92,246,.13), transparent 28%),
+        linear-gradient(180deg, #0a0910 0%, #07070b 100%);
+    }
+
+    button, input { font: inherit; }
+
+    .app {
+      width: min(1180px, calc(100% - 32px));
+      margin: 26px auto;
+      min-height: calc(100vh - 52px);
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      overflow: hidden;
+      background: rgba(15,13,20,.92);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+    }
+
+    .sidebar {
+      padding: 22px;
+      border-right: 1px solid var(--line);
+      background: rgba(12,10,16,.72);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      font-weight: 800;
+      box-shadow: 0 10px 30px rgba(217,70,117,.25);
+    }
+
+    .brand h1 {
+      font-size: 18px;
+      margin: 0;
+      letter-spacing: .02em;
+    }
+
+    .brand p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .own-profile {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: inherit;
+      padding: 14px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .own-profile:hover,
+    .chat-preview:hover {
+      transform: translateY(-1px);
+      border-color: rgba(217,70,117,.45);
+      background: var(--panel-2);
+    }
+
+    .avatar-wrap {
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      background: linear-gradient(135deg, #30253a, #16131d);
+      border: 2px solid rgba(255,255,255,.14);
+    }
+
+    .avatar.large {
+      width: 96px;
+      height: 96px;
+      border-width: 3px;
+    }
+
+    .upload-dot {
+      position: absolute;
+      right: -2px;
+      bottom: -2px;
+      width: 24px;
+      height: 24px;
+      border: 0;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+      font-size: 13px;
+      box-shadow: 0 5px 16px rgba(0,0,0,.4);
+    }
+
+    .profile-copy {
+      min-width: 0;
+      text-align: left;
+    }
+
+    .profile-copy strong,
+    .chat-copy strong {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .profile-copy span,
+    .chat-copy span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .section-label {
+      margin: 28px 4px 10px;
+      color: #7f7889;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+    }
+
+    .chat-preview {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: inherit;
+      padding: 12px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: .2s ease;
+      text-align: left;
+      position: relative;
+    }
+
+    .chat-preview.unread {
+      animation: softPulse 1.35s infinite;
+    }
+
+    .chat-preview.read {
+      animation: none;
+    }
+
+    .unread-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(217,70,117,.12);
+      margin-left: auto;
+      flex: 0 0 auto;
+    }
+
+    @keyframes softPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(217,70,117,0); }
+      50% { box-shadow: 0 0 0 5px rgba(217,70,117,.16); }
+    }
+
+    .content {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      background:
+        linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    .topbar {
+      min-height: 82px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(13,11,18,.82);
+      backdrop-filter: blur(16px);
+    }
+
+    .back-button {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+      display: none;
+    }
+
+    .back-button.visible { display: grid; place-items: center; }
+
+    .topbar-title h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .topbar-title p {
+      margin: 3px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .view {
+      flex: 1;
+      min-height: 0;
+      display: none;
+    }
+
+    .view.active { display: flex; }
+
+    .home-view {
+      align-items: center;
+      justify-content: center;
+      padding: 42px;
+      text-align: center;
+    }
+
+    .home-card {
+      width: min(560px, 100%);
+      padding: 34px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: rgba(20,18,26,.9);
+      box-shadow: 0 20px 50px rgba(0,0,0,.22);
+    }
+
+    .home-card .eyebrow {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .home-card h3 {
+      font-size: clamp(28px, 5vw, 44px);
+      margin: 10px 0 12px;
+    }
+
+    .home-card p {
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 0 auto 24px;
+      max-width: 440px;
+    }
+
+    .primary {
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 18px;
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(217,70,117,.22);
+    }
+
+    .messenger-view {
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .conversation-head {
+      min-height: 74px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(19,17,24,.82);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sender-profile-button {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px;
+      border-radius: 14px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .sender-profile-button:hover {
+      background: rgba(255,255,255,.04);
+    }
+
+    .messages {
+      flex: 1;
+      overflow: auto;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 14px;
+    }
+
+    .message {
+      max-width: min(620px, 88%);
+      padding: 15px 17px;
+      border-radius: 18px 18px 18px 6px;
+      background: #211d29;
+      border: 1px solid var(--line);
+      line-height: 1.55;
+      box-shadow: 0 10px 30px rgba(0,0,0,.15);
+    }
+
+    .composer {
+      padding: 16px 20px 20px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      gap: 10px;
+      background: rgba(13,11,18,.84);
+    }
+
+    .composer input {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+      color: var(--text);
+      padding: 13px 15px;
+      outline: none;
+    }
+
+    .composer input:focus { border-color: rgba(217,70,117,.55); }
+
+    .profile-view {
+      align-items: center;
+      justify-content: center;
+      padding: 36px;
+    }
+
+    .profile-card {
+      width: min(520px, 100%);
+      padding: 30px;
+      border-radius: 26px;
+      background: rgba(20,18,26,.94);
+      border: 1px solid var(--line);
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .profile-card h3 {
+      font-size: 28px;
+      margin: 16px 0 4px;
+    }
+
+    .profile-card .subline {
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    .details {
+      text-align: left;
+      display: grid;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 14px;
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .detail-row span:first-child {
+      color: #817988;
+      font-size: 13px;
+    }
+
+    .detail-row span:last-child {
+      color: #eee9f2;
+      line-height: 1.45;
+    }
+
+    .own-only-note {
+      color: var(--muted);
+      margin-top: 14px;
+    }
+
+    .mobile-profile {
+      display: none;
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        border-radius: 0;
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        padding: 14px;
+      }
+
+      .brand { margin-bottom: 14px; }
+      .own-profile { display: none; }
+      .mobile-profile { display: inline-flex; margin-left: auto; }
+
+      .sidebar .section-label { margin-top: 8px; }
+
+      .content { min-height: 72vh; }
+      .home-view, .profile-view { padding: 24px; }
+      .topbar { min-height: 70px; padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">N</div>
+        <div>
+          <h1>Nocturna</h1>
+          <p>soukromá seznamka</p>
+        </div>
+        <button class="back-button mobile-profile" id="mobileProfileBtn" aria-label="Otevřít můj profil">☺</button>
+      </div>
+
+      <button class="own-profile" id="ownProfileBtn">
+        <div class="avatar-wrap">
+          <img class="avatar" id="ownAvatar" alt="Profilová fotografie hráče" />
+          <span class="upload-dot" id="uploadTrigger" title="Nahrát fotografii">+</span>
+        </div>
+        <div class="profile-copy">
+          <strong id="ownNicknameSidebar">Tajemný_host</strong>
+          <span>Zobrazit můj profil</span>
+        </div>
+      </button>
+
+      <input type="file" id="photoInput" accept="image/*" hidden />
+
+      <div class="section-label">Zprávy</div>
+
+      <button class="chat-preview unread" id="messagePreview">
+        <img class="avatar" id="senderAvatarSidebar" alt="Profil odesílatele" />
+        <div class="chat-copy">
+          <strong id="senderNicknameSidebar">Velvet_23</strong>
+          <span>Nová zpráva</span>
+        </div>
+        <span class="unread-dot" id="unreadDot"></span>
+      </button>
+    </aside>
+
+    <section class="content">
+      <header class="topbar">
+        <button class="back-button" id="backBtn" aria-label="Zpět">←</button>
+        <div class="topbar-title">
+          <h2 id="topbarTitle">Zprávy</h2>
+          <p id="topbarSubtitle">Máte jednu nepřečtenou zprávu</p>
+        </div>
+      </header>
+
+      <section class="view home-view active" id="homeView">
+        <div class="home-card">
+          <div class="eyebrow">Nové spojení</div>
+          <h3>Někdo vám napsal.</h3>
+          <p>
+            Otevřete zprávu a zjistěte, kdo se s vámi chce seznámit.
+            Profil odesílatele je dostupný přímo z konverzace.
+          </p>
+          <button class="primary" id="openMessageBtn">Otevřít zprávu</button>
+        </div>
+      </section>
+
+      <section class="view messenger-view" id="messengerView">
+        <div class="conversation-head">
+          <button class="sender-profile-button" id="senderProfileBtn">
+            <img class="avatar" id="senderAvatarChat" alt="Profil odesílatele" />
+            <div class="profile-copy">
+              <strong id="senderNicknameChat">Velvet_23</strong>
+              <span>Zobrazit profil</span>
+            </div>
+          </button>
+        </div>
+
+        <div class="messages">
+          <div class="message" id="messageText">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </div>
+        </div>
+
+        <div class="composer">
+          <input type="text" placeholder="Odpovědět…" aria-label="Text odpovědi" />
+          <button class="primary" type="button">Odeslat</button>
+        </div>
+      </section>
+
+      <section class="view profile-view" id="ownProfileView">
+        <article class="profile-card">
+          <div class="avatar-wrap" style="display:inline-block">
+            <img class="avatar large" id="ownAvatarLarge" alt="Profilová fotografie hráče" />
+            <button class="upload-dot" id="uploadTriggerLarge" title="Nahrát fotografii">+</button>
+          </div>
+          <h3 id="ownNicknameProfile">Tajemný_host</h3>
+          <p class="own-only-note">Tento profil zatím neobsahuje žádné další osobní údaje.</p>
+        </article>
+      </section>
+
+      <section class="view profile-view" id="senderProfileView">
+        <article class="profile-card">
+          <img class="avatar large" id="senderAvatarProfile" alt="Profilová fotografie odesílatele" style="margin:auto" />
+          <h3 id="senderNicknameProfile">Velvet_23</h3>
+          <p class="subline" id="senderStatus">Diskrétní setkání bez zbytečných otázek</p>
+
+          <div class="details">
+            <div class="detail-row">
+              <span>Věk</span>
+              <span id="senderAge">29</span>
+            </div>
+            <div class="detail-row">
+              <span>Lokalita</span>
+              <span id="senderLocation">Praha</span>
+            </div>
+            <div class="detail-row">
+              <span>Hledám</span>
+              <span id="senderLookingFor">Nezávazné seznámení</span>
+            </div>
+            <div class="detail-row">
+              <span>O mně</span>
+              <span id="senderBio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae justo sed erat luctus posuere.</span>
+            </div>
+          </div>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    // ============================================================
+    // RYCHLÉ NASTAVENÍ OBSAHU — UPRAVUJTE HLAVNĚ TUTO ČÁST
+    // ============================================================
+    const CONFIG = {
+      ownProfile: {
+        nickname: "Tajemný_host"
+      },
+
+      senderProfile: {
+        nickname: "Velvet_23",
+        photoUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80",
+        status: "Diskrétní setkání bez zbytečných otázek",
+        age: "29",
+        location: "Praha",
+        lookingFor: "Nezávazné seznámení",
+        bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae justo sed erat luctus posuere."
+      },
+
+      messageText:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    };
+
+    // Výchozí obrázek hráče bez osobních údajů
+    const DEFAULT_OWN_AVATAR =
+      "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#49354f"/>
+              <stop offset="1" stop-color="#18131d"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="300" fill="url(#g)"/>
+          <circle cx="150" cy="112" r="54" fill="#8b7c91"/>
+          <path d="M56 282c7-62 42-96 94-96s87 34 94 96" fill="#8b7c91"/>
+        </svg>
+      `);
+
+    const views = {
+      home: document.getElementById("homeView"),
+      messenger: document.getElementById("messengerView"),
+      ownProfile: document.getElementById("ownProfileView"),
+      senderProfile: document.getElementById("senderProfileView")
+    };
+
+    const backBtn = document.getElementById("backBtn");
+    const photoInput = document.getElementById("photoInput");
+    let currentView = "home";
+    let previousView = "home";
+
+    function showView(name, remember = true) {
+      if (remember && currentView !== name) previousView = currentView;
+      currentView = name;
+
+      Object.values(views).forEach(view => view.classList.remove("active"));
+      views[name].classList.add("active");
+
+      const title = document.getElementById("topbarTitle");
+      const subtitle = document.getElementById("topbarSubtitle");
+
+      if (name === "home") {
+        title.textContent = "Zprávy";
+        subtitle.textContent = "Máte jednu nepřečtenou zprávu";
+        backBtn.classList.remove("visible");
+      }
+
+      if (name === "messenger") {
+        title.textContent = "Konverzace";
+        subtitle.textContent = CONFIG.senderProfile.nickname;
+        backBtn.classList.add("visible");
+        markAsRead();
+      }
+
+      if (name === "ownProfile") {
+        title.textContent = "Můj profil";
+        subtitle.textContent = CONFIG.ownProfile.nickname;
+        backBtn.classList.add("visible");
+      }
+
+      if (name === "senderProfile") {
+        title.textContent = "Profil uživatele";
+        subtitle.textContent = CONFIG.senderProfile.nickname;
+        backBtn.classList.add("visible");
+      }
+    }
+
+    function markAsRead() {
+      document.getElementById("messagePreview").classList.remove("unread");
+      document.getElementById("messagePreview").classList.add("read");
+      document.getElementById("unreadDot").style.display = "none";
+      if (currentView === "home") {
+        document.getElementById("topbarSubtitle").textContent = "Zpráva byla otevřena";
+      }
+    }
+
+    function triggerUpload(event) {
+      event.stopPropagation();
+      photoInput.click();
+    }
+
+    document.getElementById("ownProfileBtn").addEventListener("click", () => showView("ownProfile"));
+    document.getElementById("mobileProfileBtn").addEventListener("click", () => showView("ownProfile"));
+    document.getElementById("messagePreview").addEventListener("click", () => showView("messenger"));
+    document.getElementById("openMessageBtn").addEventListener("click", () => showView("messenger"));
+    document.getElementById("senderProfileBtn").addEventListener("click", () => showView("senderProfile"));
+
+    document.getElementById("uploadTrigger").addEventListener("click", triggerUpload);
+    document.getElementById("uploadTriggerLarge").addEventListener("click", triggerUpload);
+
+    backBtn.addEventListener("click", () => {
+      if (currentView === "senderProfile") {
+        showView("messenger", false);
+      } else {
+        showView("home", false);
+      }
+    });
+
+    photoInput.addEventListener("change", event => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        alert("Vyberte prosím obrázek.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        const src = e.target.result;
+        document.getElementById("ownAvatar").src = src;
+        document.getElementById("ownAvatarLarge").src = src;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function applyConfig() {
+      const ownNickname = CONFIG.ownProfile.nickname;
+      const sender = CONFIG.senderProfile;
+
+      document.getElementById("ownNicknameSidebar").textContent = ownNickname;
+      document.getElementById("ownNicknameProfile").textContent = ownNickname;
+
+      document.getElementById("senderNicknameSidebar").textContent = sender.nickname;
+      document.getElementById("senderNicknameChat").textContent = sender.nickname;
+      document.getElementById("senderNicknameProfile").textContent = sender.nickname;
+
+      document.getElementById("senderStatus").textContent = sender.status;
+      document.getElementById("senderAge").textContent = sender.age;
+      document.getElementById("senderLocation").textContent = sender.location;
+      document.getElementById("senderLookingFor").textContent = sender.lookingFor;
+      document.getElementById("senderBio").textContent = sender.bio;
+      document.getElementById("messageText").textContent = CONFIG.messageText;
+
+      const senderImages = [
+        document.getElementById("senderAvatarSidebar"),
+        document.getElementById("senderAvatarChat"),
+        document.getElementById("senderAvatarProfile")
+      ];
+
+      senderImages.forEach(img => {
+        img.src = sender.photoUrl;
+        img.onerror = () => { img.src = DEFAULT_OWN_AVATAR; };
+      });
+
+      document.getElementById("ownAvatar").src = DEFAULT_OWN_AVATAR;
+      document.getElementById("ownAvatarLarge").src = DEFAULT_OWN_AVATAR;
+    }
+
+    applyConfig();
+  </script>
+</body>
+</html>
