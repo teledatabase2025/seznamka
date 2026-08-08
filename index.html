@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nocturna — soukromá seznamka</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Nocturno — soukromá seznamka klubu</title>
 
   <style>
     :root {
@@ -25,14 +26,34 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
-        BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
       color: var(--text);
 
       background:
-        radial-gradient(circle at 20% 10%, rgba(217,70,117,.15), transparent 32%),
-        radial-gradient(circle at 85% 0%, rgba(139,92,246,.13), transparent 28%),
-        linear-gradient(180deg, #0a0910 0%, #07070b 100%);
+        radial-gradient(
+          circle at 20% 10%,
+          rgba(217,70,117,.15),
+          transparent 32%
+        ),
+        radial-gradient(
+          circle at 85% 0%,
+          rgba(139,92,246,.13),
+          transparent 28%
+        ),
+        linear-gradient(
+          180deg,
+          #0a0910 0%,
+          #07070b 100%
+        );
     }
 
     button,
@@ -46,41 +67,54 @@
 
     .app {
       position: relative;
+
       width: min(1180px, calc(100% - 32px));
       margin: 26px auto;
+
       min-height: calc(100vh - 52px);
+
       display: grid;
       grid-template-columns: 310px 1fr;
+
       overflow: hidden;
 
       background: rgba(15,13,20,.92);
+
       border: 1px solid var(--line);
       border-radius: 26px;
+
       box-shadow: var(--shadow);
+
       backdrop-filter: blur(20px);
     }
 
+
     /* =========================================================
-       ODCHOD ZE SEZNAMKY
+       ODEJÍT ZE SEZNAMKY
        ========================================================= */
 
     .exit-site {
       position: absolute;
+
+      top: 17px;
+      right: 18px;
+
       z-index: 100;
-      top: 18px;
-      right: 20px;
 
       display: flex;
       align-items: center;
       gap: 9px;
 
+      padding: 9px 12px;
+
       color: #c8c1ce;
       text-decoration: none;
+
       font-size: 13px;
       font-weight: 700;
 
-      padding: 8px 11px;
       border-radius: 12px;
+
       transition: .2s ease;
     }
 
@@ -90,76 +124,77 @@
     }
 
     .exit-x {
-      font-size: 29px;
+      font-size: 31px;
       line-height: 20px;
       font-weight: 300;
     }
 
+
     /* =========================================================
-       SIDEBAR
+       LEVÝ PANEL
        ========================================================= */
 
     .sidebar {
       padding: 22px;
+
       border-right: 1px solid var(--line);
+
       background: rgba(12,10,16,.72);
     }
 
     .brand {
       display: flex;
       align-items: center;
+
       gap: 12px;
+
       margin-bottom: 28px;
     }
 
     .brand-mark {
       width: 42px;
       height: 42px;
+
+      flex: 0 0 auto;
+
       border-radius: 14px;
+
       display: grid;
       place-items: center;
 
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      background:
+        linear-gradient(
+          135deg,
+          var(--accent),
+          var(--accent-2)
+        );
 
       font-weight: 800;
-      box-shadow: 0 10px 30px rgba(217,70,117,.25);
+
+      box-shadow:
+        0 10px 30px rgba(217,70,117,.25);
     }
 
     .brand h1 {
-      font-size: 18px;
       margin: 0;
+
+      font-size: 18px;
       letter-spacing: .02em;
     }
 
     .brand p {
       margin: 2px 0 0;
+
       color: var(--muted);
+
       font-size: 12px;
+      line-height: 1.35;
     }
 
-    .own-profile {
-      width: 100%;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      color: inherit;
 
-      padding: 14px;
-      border-radius: 18px;
-
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      cursor: pointer;
-      transition: .2s ease;
-    }
-
-    .own-profile:hover,
-    .chat-preview:hover {
-      transform: translateY(-1px);
-      border-color: rgba(217,70,117,.45);
-      background: var(--panel-2);
-    }
+    /* =========================================================
+       AVATARY
+       ========================================================= */
 
     .avatar-wrap {
       position: relative;
@@ -171,26 +206,37 @@
       height: 56px;
 
       border-radius: 50%;
+
       object-fit: cover;
+
       display: block;
 
-      background: linear-gradient(135deg, #30253a, #16131d);
-      border: 2px solid rgba(255,255,255,.14);
+      background:
+        linear-gradient(
+          135deg,
+          #30253a,
+          #16131d
+        );
+
+      border:
+        2px solid rgba(255,255,255,.14);
     }
 
     .avatar.large {
-      width: 96px;
-      height: 96px;
+      width: 110px;
+      height: 110px;
+
       border-width: 3px;
     }
 
     .upload-dot {
       position: absolute;
+
       right: -2px;
       bottom: -2px;
 
-      width: 24px;
-      height: 24px;
+      width: 27px;
+      height: 27px;
 
       border: 0;
       border-radius: 50%;
@@ -199,11 +245,55 @@
       place-items: center;
 
       background: var(--accent);
+
       color: white;
+
       cursor: pointer;
 
-      font-size: 13px;
-      box-shadow: 0 5px 16px rgba(0,0,0,.4);
+      font-size: 16px;
+
+      box-shadow:
+        0 5px 16px rgba(0,0,0,.4);
+    }
+
+
+    /* =========================================================
+       VLASTNÍ PROFIL V LEVÉM PANELU
+       ========================================================= */
+
+    .own-profile {
+      width: 100%;
+
+      padding: 14px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 18px;
+
+      background: var(--panel);
+
+      color: inherit;
+
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      cursor: pointer;
+
+      transition: .2s ease;
+    }
+
+    .own-profile:hover,
+    .chat-preview:hover {
+      transform: translateY(-1px);
+
+      border-color:
+        rgba(217,70,117,.45);
+
+      background:
+        var(--panel-2);
     }
 
     .profile-copy {
@@ -214,7 +304,9 @@
     .profile-copy strong,
     .chat-copy strong {
       display: block;
+
       white-space: nowrap;
+
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -222,41 +314,61 @@
     .profile-copy span,
     .chat-copy span {
       color: var(--muted);
+
       font-size: 13px;
     }
 
+
+    /* =========================================================
+       SEZNAM ZPRÁV
+       ========================================================= */
+
     .section-label {
-      margin: 28px 4px 10px;
+      margin:
+        28px 4px 10px;
+
       color: #7f7889;
 
       font-size: 11px;
       font-weight: 700;
+
       text-transform: uppercase;
+
       letter-spacing: .16em;
     }
 
     .chat-preview {
       width: 100%;
 
-      border: 1px solid var(--line);
-      background: var(--panel);
-      color: inherit;
-
       padding: 12px;
+
+      border:
+        1px solid var(--line);
+
       border-radius: 18px;
+
+      background:
+        var(--panel);
+
+      color: inherit;
 
       display: flex;
       align-items: center;
+
       gap: 12px;
 
       cursor: pointer;
-      transition: .2s ease;
+
       text-align: left;
+
       position: relative;
+
+      transition: .2s ease;
     }
 
     .chat-preview.unread {
-      animation: softPulse 1.35s infinite;
+      animation:
+        softPulse 1.35s infinite;
     }
 
     .chat-preview.read {
@@ -267,24 +379,32 @@
       width: 11px;
       height: 11px;
 
-      border-radius: 50%;
-      background: var(--accent);
+      flex: 0 0 auto;
 
-      box-shadow: 0 0 0 6px rgba(217,70,117,.12);
       margin-left: auto;
 
-      flex: 0 0 auto;
+      border-radius: 50%;
+
+      background:
+        var(--accent);
+
+      box-shadow:
+        0 0 0 6px rgba(217,70,117,.12);
     }
 
     @keyframes softPulse {
-      0%, 100% {
-        box-shadow: 0 0 0 0 rgba(217,70,117,0);
+      0%,
+      100% {
+        box-shadow:
+          0 0 0 0 rgba(217,70,117,0);
       }
 
       50% {
-        box-shadow: 0 0 0 5px rgba(217,70,117,.16);
+        box-shadow:
+          0 0 0 5px rgba(217,70,117,.16);
       }
     }
+
 
     /* =========================================================
        HLAVNÍ OBSAH
@@ -292,41 +412,63 @@
 
     .content {
       min-width: 0;
+
       display: flex;
       flex-direction: column;
 
       background:
-        linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+        linear-gradient(
+          rgba(255,255,255,.015) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.015) 1px,
+          transparent 1px
+        );
 
-      background-size: 32px 32px;
+      background-size:
+        32px 32px;
     }
 
     .topbar {
       min-height: 82px;
-      padding: 18px 210px 18px 24px;
 
-      border-bottom: 1px solid var(--line);
+      padding:
+        18px 210px 18px 24px;
+
+      border-bottom:
+        1px solid var(--line);
 
       display: flex;
       align-items: center;
+
       gap: 14px;
 
-      background: rgba(13,11,18,.82);
-      backdrop-filter: blur(16px);
+      background:
+        rgba(13,11,18,.82);
+
+      backdrop-filter:
+        blur(16px);
     }
 
     .back-button {
       width: 40px;
       height: 40px;
 
-      border-radius: 12px;
-      border: 1px solid var(--line);
+      border:
+        1px solid var(--line);
 
-      background: var(--panel);
-      color: var(--text);
+      border-radius: 12px;
+
+      background:
+        var(--panel);
+
+      color:
+        var(--text);
 
       cursor: pointer;
+
       display: none;
     }
 
@@ -341,14 +483,20 @@
     }
 
     .topbar-title p {
-      margin: 3px 0 0;
+      margin:
+        3px 0 0;
+
+      color:
+        var(--muted);
+
       font-size: 13px;
-      color: var(--muted);
     }
 
     .view {
       flex: 1;
+
       min-height: 0;
+
       display: none;
     }
 
@@ -356,68 +504,105 @@
       display: flex;
     }
 
+
     /* =========================================================
-       ÚVOD
+       ÚVODNÍ OBRAZOVKA
        ========================================================= */
 
     .home-view {
       align-items: center;
       justify-content: center;
+
       padding: 42px;
+
       text-align: center;
     }
 
     .home-card {
-      width: min(560px, 100%);
+      width:
+        min(560px, 100%);
+
       padding: 34px;
 
-      border: 1px solid var(--line);
+      border:
+        1px solid var(--line);
+
       border-radius: 26px;
 
-      background: rgba(20,18,26,.9);
-      box-shadow: 0 20px 50px rgba(0,0,0,.22);
+      background:
+        rgba(20,18,26,.9);
+
+      box-shadow:
+        0 20px 50px rgba(0,0,0,.22);
     }
 
     .home-card .eyebrow {
-      color: var(--accent);
+      color:
+        var(--accent);
 
       font-size: 12px;
       font-weight: 800;
-      letter-spacing: .16em;
-      text-transform: uppercase;
+
+      letter-spacing:
+        .16em;
+
+      text-transform:
+        uppercase;
     }
 
     .home-card h3 {
-      font-size: clamp(28px, 5vw, 44px);
-      margin: 10px 0 12px;
+      margin:
+        10px 0 12px;
+
+      font-size:
+        clamp(28px, 5vw, 44px);
     }
 
     .home-card p {
-      color: var(--muted);
-      line-height: 1.65;
+      max-width:
+        440px;
 
-      margin: 0 auto 24px;
-      max-width: 440px;
+      margin:
+        0 auto 24px;
+
+      color:
+        var(--muted);
+
+      line-height:
+        1.65;
     }
 
     .primary {
+      padding:
+        13px 18px;
+
       border: 0;
       border-radius: 14px;
 
-      padding: 13px 18px;
-
       color: white;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--accent),
+          var(--accent-2)
+        );
 
       cursor: pointer;
+
       font-weight: 700;
 
-      box-shadow: 0 10px 25px rgba(217,70,117,.22);
+      box-shadow:
+        0 10px 25px rgba(217,70,117,.22);
+
+      transition: .2s;
     }
 
     .primary:hover {
-      filter: brightness(1.08);
+      filter:
+        brightness(1.08);
     }
+
 
     /* =========================================================
        KONVERZACE
@@ -425,43 +610,57 @@
 
     .messenger-view {
       flex-direction: column;
+
       min-height: 0;
     }
 
     .conversation-head {
       min-height: 74px;
-      padding: 12px 20px;
 
-      border-bottom: 1px solid var(--line);
-      background: rgba(19,17,24,.82);
+      padding:
+        12px 20px;
+
+      border-bottom:
+        1px solid var(--line);
+
+      background:
+        rgba(19,17,24,.82);
 
       display: flex;
       align-items: center;
+
       gap: 12px;
     }
 
     .sender-profile-button {
+      padding: 6px;
+
       border: 0;
-      background: transparent;
+      border-radius: 14px;
+
+      background:
+        transparent;
+
       color: inherit;
 
       display: flex;
       align-items: center;
+
       gap: 12px;
 
-      padding: 6px;
-      border-radius: 14px;
-
       cursor: pointer;
+
       text-align: left;
     }
 
     .sender-profile-button:hover {
-      background: rgba(255,255,255,.04);
+      background:
+        rgba(255,255,255,.04);
     }
 
     .messages {
       flex: 1;
+
       overflow: auto;
 
       padding: 26px;
@@ -475,27 +674,42 @@
     .message-row {
       display: flex;
       flex-direction: column;
+
       align-items: flex-start;
     }
 
     .message {
-      max-width: min(680px, 88%);
+      max-width:
+        min(680px, 88%);
 
-      padding: 15px 17px;
+      padding:
+        15px 17px;
 
-      border-radius: 18px 18px 18px 6px;
+      border:
+        1px solid var(--line);
 
-      background: #211d29;
-      border: 1px solid var(--line);
+      border-radius:
+        18px 18px 18px 6px;
 
-      line-height: 1.55;
-      box-shadow: 0 10px 30px rgba(0,0,0,.15);
+      background:
+        #211d29;
 
-      white-space: pre-wrap;
+      line-height:
+        1.55;
+
+      box-shadow:
+        0 10px 30px rgba(0,0,0,.15);
+
+      white-space:
+        pre-wrap;
     }
 
     .message.outgoing {
-      align-self: flex-end;
+      align-self:
+        flex-end;
+
+      border-radius:
+        18px 18px 6px 18px;
 
       background:
         linear-gradient(
@@ -503,31 +717,44 @@
           rgba(217,70,117,.24),
           rgba(139,92,246,.22)
         );
-
-      border-radius: 18px 18px 6px 18px;
     }
+
+
+    /* =========================================================
+       SRDÍČKO
+       ========================================================= */
 
     .message-actions {
       margin-top: 7px;
+
       padding-left: 5px;
 
       display: flex;
       align-items: center;
+
       gap: 10px;
     }
 
     .heart-button {
-      width: 38px;
-      height: 34px;
+      width: 40px;
+      height: 36px;
 
-      border: 1px solid var(--line);
+      padding: 0;
+
+      border:
+        1px solid var(--line);
+
       border-radius: 12px;
 
-      background: rgba(255,255,255,.025);
+      background:
+        rgba(255,255,255,.025);
+
+      color:
+        #817988;
 
       cursor: pointer;
-      font-size: 21px;
-      color: #817988;
+
+      font-size: 22px;
 
       display: grid;
       place-items: center;
@@ -536,65 +763,167 @@
     }
 
     .heart-button:hover {
-      border-color: rgba(217,70,117,.45);
-      color: var(--accent);
-      transform: scale(1.04);
+      color:
+        var(--accent);
+
+      border-color:
+        rgba(217,70,117,.45);
+
+      transform:
+        scale(1.05);
     }
 
     .heart-button.liked {
-      color: #ff4f82;
-      background: rgba(217,70,117,.10);
-      border-color: rgba(217,70,117,.38);
+      color:
+        #ff4f82;
+
+      background:
+        rgba(217,70,117,.11);
+
+      border-color:
+        rgba(217,70,117,.42);
     }
 
+
     /* =========================================================
-       ODPOVĚĎ
+       TŘI POSKAKUJÍCÍ TEČKY
+       ========================================================= */
+
+    .typing-indicator {
+      align-self:
+        flex-end;
+
+      min-width: 67px;
+
+      padding:
+        15px 17px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        18px 18px 6px 18px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(217,70,117,.24),
+          rgba(139,92,246,.22)
+        );
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 5px;
+
+      box-shadow:
+        0 10px 30px rgba(0,0,0,.15);
+    }
+
+    .typing-indicator span {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background:
+        #ece4ef;
+
+      animation:
+        typingBounce 1.05s infinite ease-in-out;
+
+      opacity: .45;
+    }
+
+    .typing-indicator span:nth-child(2) {
+      animation-delay: .14s;
+    }
+
+    .typing-indicator span:nth-child(3) {
+      animation-delay: .28s;
+    }
+
+    @keyframes typingBounce {
+      0%,
+      60%,
+      100% {
+        transform:
+          translateY(0);
+
+        opacity: .4;
+      }
+
+      30% {
+        transform:
+          translateY(-6px);
+
+        opacity: 1;
+      }
+    }
+
+
+    /* =========================================================
+       ODPOVĚDNÍ OKNO
        ========================================================= */
 
     .composer {
       position: relative;
 
-      padding: 16px 20px 20px;
+      padding:
+        16px 20px 20px;
 
-      border-top: 1px solid var(--line);
+      border-top:
+        1px solid var(--line);
 
       display: flex;
+
       gap: 10px;
 
-      background: rgba(13,11,18,.84);
+      background:
+        rgba(13,11,18,.84);
     }
 
     .reply-field {
       flex: 1;
+
       min-width: 0;
 
-      border: 1px solid var(--line);
+      padding:
+        13px 15px;
+
+      border:
+        1px solid var(--line);
+
       border-radius: 14px;
 
-      background: var(--panel);
-      color: var(--muted);
+      background:
+        var(--panel);
 
-      padding: 13px 15px;
+      color:
+        var(--muted);
 
       cursor: pointer;
+
       text-align: left;
 
       transition: .2s ease;
     }
 
     .reply-field:hover {
-      border-color: rgba(217,70,117,.55);
-      background: var(--panel-2);
+      border-color:
+        rgba(217,70,117,.55);
+
+      background:
+        var(--panel-2);
     }
 
     .reply-field.disabled {
-      cursor: default;
       opacity: .48;
-    }
 
-    .reply-field.disabled:hover {
-      border-color: var(--line);
-      background: var(--panel);
+      cursor: default;
+
+      pointer-events: none;
     }
 
     .reply-options {
@@ -603,19 +932,24 @@
       right: 20px;
       bottom: 76px;
 
-      width: 250px;
+      width: 260px;
 
       padding: 10px;
 
+      border:
+        1px solid var(--line);
+
       border-radius: 18px;
-      border: 1px solid var(--line);
 
-      background: #1b1822;
+      background:
+        #1b1822;
 
-      box-shadow: 0 20px 60px rgba(0,0,0,.55);
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.55);
 
       display: none;
       flex-direction: column;
+
       gap: 8px;
 
       z-index: 20;
@@ -628,23 +962,34 @@
     .reply-choice {
       width: 100%;
 
-      border: 1px solid var(--line);
+      padding:
+        12px 14px;
+
+      border:
+        1px solid var(--line);
+
       border-radius: 13px;
 
-      padding: 12px 14px;
+      background:
+        #211d29;
 
-      background: #211d29;
-      color: var(--text);
+      color:
+        var(--text);
 
       cursor: pointer;
+
       text-align: left;
 
-      transition: .15s ease;
+      transition:
+        .15s ease;
     }
 
     .reply-choice:hover {
-      background: #292330;
-      border-color: rgba(217,70,117,.4);
+      background:
+        #292330;
+
+      border-color:
+        rgba(217,70,117,.4);
     }
 
     .reply-choice.answer {
@@ -656,6 +1001,7 @@
         );
     }
 
+
     /* =========================================================
        PROFILY
        ========================================================= */
@@ -663,84 +1009,107 @@
     .profile-view {
       align-items: center;
       justify-content: center;
+
       padding: 36px;
     }
 
     .profile-card {
-      width: min(520px, 100%);
-      padding: 30px;
+      width:
+        min(520px, 100%);
+
+      padding: 32px;
+
+      border:
+        1px solid var(--line);
 
       border-radius: 26px;
-      background: rgba(20,18,26,.94);
 
-      border: 1px solid var(--line);
+      background:
+        rgba(20,18,26,.94);
 
       text-align: center;
-      box-shadow: var(--shadow);
+
+      box-shadow:
+        var(--shadow);
     }
 
     .profile-card h3 {
-      font-size: 28px;
-      margin: 16px 0 4px;
-    }
+      margin:
+        16px 0 6px;
 
-    .profile-card .subline {
-      color: var(--muted);
-      margin-bottom: 22px;
+      font-size: 28px;
     }
 
     .details {
-      text-align: left;
+      margin-top: 24px;
 
       display: grid;
-      gap: 10px;
 
-      margin-top: 20px;
+      gap: 0;
+
+      text-align: left;
     }
 
     .detail-row {
       display: grid;
-      grid-template-columns: 150px 1fr;
+
+      grid-template-columns:
+        160px 1fr;
+
       gap: 14px;
 
-      padding: 12px 0;
+      padding:
+        14px 0;
 
-      border-top: 1px solid var(--line);
+      border-top:
+        1px solid var(--line);
     }
 
     .detail-row span:first-child {
-      color: #817988;
+      color:
+        #817988;
+
       font-size: 13px;
     }
 
     .detail-row span:last-child {
-      color: #eee9f2;
-      line-height: 1.45;
+      color:
+        #eee9f2;
+
+      line-height:
+        1.45;
     }
 
     .mobile-profile {
       display: none;
     }
 
+
     /* =========================================================
        MOBIL
        ========================================================= */
 
     @media (max-width: 760px) {
+
       .app {
         width: 100%;
+
         min-height: 100vh;
+
         margin: 0;
 
         border-radius: 0;
+
         grid-template-columns: 1fr;
       }
 
       .sidebar {
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
-
         padding: 14px;
+
+        border-right: 0;
+
+        border-bottom:
+          1px solid var(--line);
       }
 
       .brand {
@@ -753,6 +1122,7 @@
 
       .mobile-profile {
         display: inline-flex;
+
         margin-left: auto;
       }
 
@@ -771,13 +1141,16 @@
 
       .topbar {
         min-height: 70px;
-        padding: 14px 165px 14px 16px;
+
+        padding:
+          14px 160px 14px 16px;
       }
 
       .exit-site {
-        top: 12px;
-        right: 10px;
-        font-size: 11px;
+        top: 11px;
+        right: 8px;
+
+        font-size: 10px;
       }
 
       .exit-x {
@@ -795,465 +1168,686 @@
       .reply-options {
         left: 20px;
         right: 20px;
+
         width: auto;
       }
 
       .detail-row {
-        grid-template-columns: 125px 1fr;
+        grid-template-columns:
+          135px 1fr;
       }
+
     }
+
   </style>
 </head>
 
+
 <body>
 
-  <main class="app">
+<main class="app">
 
-    <!-- =======================================================
-         FIKTIVNÍ ODKAZ – POZDĚJI STAČÍ ZMĚNIT href
-         ======================================================= -->
 
-    <a
-      class="exit-site"
-      href="https://example.com"
-      id="exitSite"
-    >
-      <span class="exit-x">×</span>
-      <span>Odejít ze seznamky</span>
-    </a>
+  <!-- =========================================================
+       ODEJÍT ZE SEZNAMKY
 
-    <!-- =======================================================
-         LEVÝ PANEL
-         ======================================================= -->
+       TADY POZDĚJI VYMĚŇ ADRESU
+       https://example.com
+       ========================================================= -->
 
-    <aside class="sidebar">
+  <a
+    href="https://example.com"
+    class="exit-site"
+    id="exitSite"
+  >
+    <span class="exit-x">×</span>
 
-      <div class="brand">
+    <span>
+      Odejít ze seznamky
+    </span>
+  </a>
 
-        <div class="brand-mark">N</div>
 
-        <div>
-          <h1>Nocturna</h1>
-          <p>soukromá seznamka</p>
-        </div>
 
-        <button
-          class="back-button mobile-profile"
-          id="mobileProfileBtn"
-          aria-label="Otevřít můj profil"
-        >
-          ☺
-        </button>
+  <!-- =========================================================
+       LEVÝ PANEL
+       ========================================================= -->
+
+  <aside class="sidebar">
+
+
+    <div class="brand">
+
+      <div class="brand-mark">
+        N
+      </div>
+
+      <div>
+
+        <h1>
+          Nocturno
+        </h1>
+
+        <p>
+          soukromá seznamka klubu Nocturno
+        </p>
 
       </div>
 
-      <button class="own-profile" id="ownProfileBtn">
-
-        <div class="avatar-wrap">
-
-          <img
-            class="avatar"
-            id="ownAvatar"
-            alt="Profilová fotografie hráče"
-          />
-
-          <span
-            class="upload-dot"
-            id="uploadTrigger"
-            title="Nahrát fotografii"
-          >
-            +
-          </span>
-
-        </div>
-
-        <div class="profile-copy">
-
-          <strong id="ownNicknameSidebar">
-            Král Hroznýšů
-          </strong>
-
-          <span>
-            Zobrazit můj profil
-          </span>
-
-        </div>
-
-      </button>
-
-      <input
-        type="file"
-        id="photoInput"
-        accept="image/*"
-        hidden
-      />
-
-      <div class="section-label">
-        Zprávy
-      </div>
 
       <button
-        class="chat-preview unread"
-        id="messagePreview"
+        class="back-button mobile-profile"
+        id="mobileProfileBtn"
+        aria-label="Otevřít můj profil"
       >
+        ☺
+      </button>
+
+    </div>
+
+
+
+    <!-- MŮJ PROFIL -->
+
+    <button
+      class="own-profile"
+      id="ownProfileBtn"
+    >
+
+      <div class="avatar-wrap">
 
         <img
           class="avatar"
-          id="senderAvatarSidebar"
-          alt="Profil odesílatele"
-        />
-
-        <div class="chat-copy">
-
-          <strong id="senderNicknameSidebar">
-            Zlobivá kočička
-          </strong>
-
-          <span>
-            Nová zpráva
-          </span>
-
-        </div>
+          id="ownAvatar"
+          alt="Král Hroznýšů"
+        >
 
         <span
-          class="unread-dot"
-          id="unreadDot"
-        ></span>
+          class="upload-dot"
+          id="uploadTrigger"
+          title="Nahrát fotografii"
+        >
+          +
+        </span>
 
+      </div>
+
+
+      <div class="profile-copy">
+
+        <strong
+          id="ownNicknameSidebar"
+        >
+          Král Hroznýšů
+        </strong>
+
+        <span>
+          Zobrazit můj profil
+        </span>
+
+      </div>
+
+    </button>
+
+
+    <input
+      type="file"
+      id="photoInput"
+      accept="image/*"
+      hidden
+    >
+
+
+
+    <!-- ZPRÁVY -->
+
+    <div class="section-label">
+      Zprávy
+    </div>
+
+
+    <button
+      class="chat-preview unread"
+      id="messagePreview"
+    >
+
+      <img
+        class="avatar"
+        id="senderAvatarSidebar"
+        alt="Zlobivá kočička"
+      >
+
+
+      <div class="chat-copy">
+
+        <strong
+          id="senderNicknameSidebar"
+        >
+          Zlobivá kočička
+        </strong>
+
+        <span id="previewStatus">
+          Nová zpráva
+        </span>
+
+      </div>
+
+
+      <span
+        class="unread-dot"
+        id="unreadDot"
+      ></span>
+
+    </button>
+
+
+  </aside>
+
+
+
+  <!-- =========================================================
+       PRAVÁ ČÁST
+       ========================================================= -->
+
+  <section class="content">
+
+
+    <!-- HORNÍ LIŠTA -->
+
+    <header class="topbar">
+
+      <button
+        class="back-button"
+        id="backBtn"
+        aria-label="Zpět"
+      >
+        ←
       </button>
 
-    </aside>
+
+      <div class="topbar-title">
+
+        <h2 id="topbarTitle">
+          Zprávy
+        </h2>
+
+        <p id="topbarSubtitle">
+          Máte jednu nepřečtenou zprávu
+        </p>
+
+      </div>
+
+    </header>
+
+
 
     <!-- =======================================================
-         OBSAH
+         ÚVODNÍ OBRAZOVKA
          ======================================================= -->
 
-    <section class="content">
+    <section
+      class="view home-view active"
+      id="homeView"
+    >
 
-      <header class="topbar">
+      <div class="home-card">
+
+        <div class="eyebrow">
+          Nové spojení
+        </div>
+
+        <h3>
+          Někdo vám napsal.
+        </h3>
+
+        <p>
+          Otevřete zprávu a zjistěte,
+          kdo se s vámi chce seznámit.
+          Profil odesílatele je dostupný
+          přímo z konverzace.
+        </p>
 
         <button
-          class="back-button"
-          id="backBtn"
-          aria-label="Zpět"
+          class="primary"
+          id="openMessageBtn"
         >
-          ←
+          Otevřít zprávu
         </button>
 
-        <div class="topbar-title">
-
-          <h2 id="topbarTitle">
-            Zprávy
-          </h2>
-
-          <p id="topbarSubtitle">
-            Máte jednu nepřečtenou zprávu
-          </p>
-
-        </div>
-
-      </header>
-
-      <!-- =====================================================
-           ÚVODNÍ OBRAZOVKA
-           ===================================================== -->
-
-      <section
-        class="view home-view active"
-        id="homeView"
-      >
-
-        <div class="home-card">
-
-          <div class="eyebrow">
-            Nové spojení
-          </div>
-
-          <h3>
-            Někdo vám napsal.
-          </h3>
-
-          <p>
-            Otevřete zprávu a zjistěte, kdo se s vámi chce seznámit.
-            Profil odesílatele je dostupný přímo z konverzace.
-          </p>
-
-          <button
-            class="primary"
-            id="openMessageBtn"
-          >
-            Otevřít zprávu
-          </button>
-
-        </div>
-
-      </section>
-
-      <!-- =====================================================
-           KONVERZACE
-           ===================================================== -->
-
-      <section
-        class="view messenger-view"
-        id="messengerView"
-      >
-
-        <div class="conversation-head">
-
-          <button
-            class="sender-profile-button"
-            id="senderProfileBtn"
-          >
-
-            <img
-              class="avatar"
-              id="senderAvatarChat"
-              alt="Profil Zlobivé kočičky"
-            />
-
-            <div class="profile-copy">
-
-              <strong id="senderNicknameChat">
-                Zlobivá kočička
-              </strong>
-
-              <span>
-                Zobrazit profil
-              </span>
-
-            </div>
-
-          </button>
-
-        </div>
-
-        <div
-          class="messages"
-          id="messages"
-        >
-
-          <div class="message-row">
-
-            <div
-              class="message"
-              id="messageText"
-            ></div>
-
-            <div class="message-actions">
-
-              <button
-                class="heart-button"
-                id="heartButton"
-                title="To se mi líbí"
-                aria-label="Označit zprávu srdíčkem"
-              >
-                ♥
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- ===================================================
-             ODPOVĚĎ – NEJDE RUČNĚ PSÁT
-             =================================================== -->
-
-        <div class="composer">
-
-          <button
-            type="button"
-            class="reply-field"
-            id="replyField"
-          >
-            Odpovědět…
-          </button>
-
-          <div
-            class="reply-options"
-            id="replyOptions"
-          >
-
-            <button
-              type="button"
-              class="reply-choice"
-              id="ignoreBtn"
-            >
-              Ignorovat
-            </button>
-
-            <button
-              type="button"
-              class="reply-choice answer"
-              id="answerBtn"
-            >
-              Odpovědět
-            </button>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- =====================================================
-           MŮJ PROFIL
-           ===================================================== -->
-
-      <section
-        class="view profile-view"
-        id="ownProfileView"
-      >
-
-        <article class="profile-card">
-
-          <div
-            class="avatar-wrap"
-            style="display:inline-block"
-          >
-
-            <img
-              class="avatar large"
-              id="ownAvatarLarge"
-              alt="Profilová fotografie hráče"
-            />
-
-            <button
-              class="upload-dot"
-              id="uploadTriggerLarge"
-              title="Nahrát fotografii"
-            >
-              +
-            </button>
-
-          </div>
-
-          <h3 id="ownNicknameProfile">
-            Král Hroznýšů
-          </h3>
-
-          <div class="details">
-
-            <div class="detail-row">
-              <span>Věk</span>
-              <span>nevyplněno</span>
-            </div>
-
-            <div class="detail-row">
-              <span>Oblíbené pití</span>
-              <span>Old Fashioned</span>
-            </div>
-
-            <div class="detail-row">
-              <span>Obvyklá rezervace</span>
-              <span>místo u baru</span>
-            </div>
-
-          </div>
-
-        </article>
-
-      </section>
-
-      <!-- =====================================================
-           PROFIL ZLOBIVÉ KOČIČKY
-           ===================================================== -->
-
-      <section
-        class="view profile-view"
-        id="senderProfileView"
-      >
-
-        <article class="profile-card">
-
-          <img
-            class="avatar large"
-            id="senderAvatarProfile"
-            alt="Profilová fotografie odesílatele"
-            style="margin:auto"
-          />
-
-          <h3 id="senderNicknameProfile">
-            Zlobivá kočička
-          </h3>
-
-          <p
-            class="subline"
-            id="senderStatus"
-          >
-            Diskrétní setkání bez zbytečných otázek
-          </p>
-
-          <div class="details">
-
-            <div class="detail-row">
-              <span>Věk</span>
-              <span id="senderAge">29</span>
-            </div>
-
-            <div class="detail-row">
-              <span>Lokalita</span>
-              <span id="senderLocation">Praha</span>
-            </div>
-
-            <div class="detail-row">
-              <span>Hledám</span>
-              <span id="senderLookingFor">Nezávazné seznámení</span>
-            </div>
-
-            <div class="detail-row">
-              <span>O mně</span>
-              <span id="senderBio">
-                Ráda poznávám nové lidi a nemám ráda nudu.
-              </span>
-            </div>
-
-          </div>
-
-        </article>
-
-      </section>
+      </div>
 
     </section>
 
-  </main>
 
-  <script>
 
-    // ============================================================
-    // NASTAVENÍ
-    // ============================================================
+    <!-- =======================================================
+         KONVERZACE
+         ======================================================= -->
 
-    const CONFIG = {
+    <section
+      class="view messenger-view"
+      id="messengerView"
+    >
 
-      ownProfile: {
-        nickname: "Král Hroznýšů"
-      },
 
-      senderProfile: {
-        nickname: "Zlobivá kočička",
+      <div class="conversation-head">
 
-        photoUrl:
-          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80",
+        <button
+          class="sender-profile-button"
+          id="senderProfileBtn"
+        >
 
-        status:
-          "Diskrétní setkání bez zbytečných otázek",
+          <img
+            class="avatar"
+            id="senderAvatarChat"
+            alt="Zlobivá kočička"
+          >
 
-        age:
-          "29",
 
-        location:
-          "Praha",
+          <div class="profile-copy">
 
-        lookingFor:
-          "Nezávazné seznámení",
+            <strong
+              id="senderNicknameChat"
+            >
+              Zlobivá kočička
+            </strong>
 
-        bio:
-          "Ráda poznávám nové lidi a nemám ráda nudu."
-      },
+            <span>
+              Zobrazit profil
+            </span>
 
-      messageText: `Ahoj ,
+          </div>
+
+        </button>
+
+      </div>
+
+
+
+      <!-- ZPRÁVY -->
+
+      <div
+        class="messages"
+        id="messages"
+      >
+
+
+        <div class="message-row">
+
+          <div
+            class="message"
+            id="messageText"
+          ></div>
+
+
+          <div class="message-actions">
+
+            <button
+              class="heart-button"
+              id="heartButton"
+              type="button"
+              aria-label="To se mi líbí"
+              title="To se mi líbí"
+            >
+              ♥
+            </button>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ODPOVĚĎ -->
+
+      <div class="composer">
+
+
+        <button
+          type="button"
+          class="reply-field"
+          id="replyField"
+        >
+          Odpovědět…
+        </button>
+
+
+
+        <div
+          class="reply-options"
+          id="replyOptions"
+        >
+
+
+          <button
+            type="button"
+            class="reply-choice"
+            id="ignoreBtn"
+          >
+            Ignorovat
+          </button>
+
+
+          <button
+            type="button"
+            class="reply-choice answer"
+            id="answerBtn"
+          >
+            Odpovědět
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =======================================================
+         PROFIL KRÁLE HROZNÝŠŮ
+         ======================================================= -->
+
+    <section
+      class="view profile-view"
+      id="ownProfileView"
+    >
+
+
+      <article class="profile-card">
+
+
+        <div
+          class="avatar-wrap"
+          style="display:inline-block"
+        >
+
+
+          <img
+            class="avatar large"
+            id="ownAvatarLarge"
+            alt="Král Hroznýšů"
+          >
+
+
+          <button
+            class="upload-dot"
+            id="uploadTriggerLarge"
+            type="button"
+            title="Nahrát fotografii"
+          >
+            +
+          </button>
+
+
+        </div>
+
+
+
+        <h3
+          id="ownNicknameProfile"
+        >
+          Král Hroznýšů
+        </h3>
+
+
+
+        <div class="details">
+
+
+          <div class="detail-row">
+
+            <span>
+              Věk
+            </span>
+
+            <span id="ownAge">
+              26–35
+            </span>
+
+          </div>
+
+
+
+          <div class="detail-row">
+
+            <span>
+              Oblíbené pití
+            </span>
+
+            <span id="ownFavouriteDrink">
+              Old Fashioned
+            </span>
+
+          </div>
+
+
+
+          <div class="detail-row">
+
+            <span>
+              Obvyklá rezervace
+            </span>
+
+            <span id="ownReservation">
+              místo u baru
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+      </article>
+
+
+    </section>
+
+
+
+    <!-- =======================================================
+         PROFIL ZLOBIVÉ KOČIČKY
+         ======================================================= -->
+
+    <section
+      class="view profile-view"
+      id="senderProfileView"
+    >
+
+
+      <article class="profile-card">
+
+
+        <img
+          class="avatar large"
+          id="senderAvatarProfile"
+          alt="Zlobivá kočička"
+          style="margin:auto"
+        >
+
+
+
+        <h3
+          id="senderNicknameProfile"
+        >
+          Zlobivá kočička
+        </h3>
+
+
+
+        <div class="details">
+
+
+          <div class="detail-row">
+
+            <span>
+              Věk
+            </span>
+
+            <span id="senderAge">
+              26–35
+            </span>
+
+          </div>
+
+
+
+          <div class="detail-row">
+
+            <span>
+              Oblíbené pití
+            </span>
+
+            <span id="senderFavouriteDrink">
+              Daiquiri
+            </span>
+
+          </div>
+
+
+
+          <div class="detail-row">
+
+            <span>
+              Obvyklá rezervace
+            </span>
+
+            <span id="senderReservation">
+              bez rezervace
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+      </article>
+
+
+    </section>
+
+
+  </section>
+
+
+</main>
+
+
+
+<script>
+
+
+/* =============================================================
+   =============================================================
+   RYCHLÉ NASTAVENÍ
+   =============================================================
+   =============================================================
+
+   TADY SI POZDĚJI MŮŽEŠ SNADNO ZMĚNIT OBA OBRÁZKY.
+
+   Pokud jsou obrázky ve stejné složce jako tento HTML soubor:
+
+   photoUrl: "kral-hroznysu.jpg"
+
+   photoUrl: "zlobiva-kocicka.jpg"
+
+   ============================================================= */
+
+
+const CONFIG = {
+
+
+  /* ===========================================================
+     KRÁL HROZNÝŠŮ
+     =========================================================== */
+
+  ownProfile: {
+
+    nickname:
+      "Král Hroznýšů",
+
+
+    /*
+      SEM DEJ PROFILOVOU FOTKU KRÁLE HROZNÝŠŮ.
+
+      Příklad:
+      photoUrl: "kral-hroznysu.jpg"
+
+      Pokud necháš prázdné "",
+      zobrazí se anonymní výchozí avatar.
+    */
+
+    photoUrl:
+      "",
+
+
+    age:
+      "26–35",
+
+
+    favouriteDrink:
+      "Old Fashioned",
+
+
+    usualReservation:
+      "místo u baru"
+
+  },
+
+
+
+  /* ===========================================================
+     ZLOBIVÁ KOČIČKA
+     =========================================================== */
+
+  senderProfile: {
+
+    nickname:
+      "Zlobivá kočička",
+
+
+    /*
+      SEM DEJ PROFILOVOU FOTKU ZLOBIVÉ KOČIČKY.
+
+      Můžeš použít například:
+
+      photoUrl: "zlobiva-kocicka.jpg"
+
+      nebo libovolnou webovou URL.
+    */
+
+    photoUrl:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80",
+
+
+    age:
+      "26–35",
+
+
+    favouriteDrink:
+      "Daiquiri",
+
+
+    usualReservation:
+      "bez rezervace"
+
+  },
+
+
+
+  /* ===========================================================
+     ZPRÁVA ZLOBIVÉ KOČIČKY
+     =========================================================== */
+
+  messageText: `Ahoj ,
 
 nevím, jestli si tě s někým nepletu, ale podle mě jsme se viděli na swingers párty minulý pátek. Nebo teda aspoň ses představil úplně stejnou přezdívkou. Koupil jsi mi drink. Říkal jsi mi tak sprostá slova, že jsem z toho byla úplně vlhká. Ale to ty přece víš. Musel jsi to cítit, když jsi mi zajel rukou do rozkroku a začals mě tam prsty dráždit. Tekla jsem ti po ruce a tobě se to tak líbilo. Ty prsty sis pak olizoval, jak nadrženej puberťák.
 
@@ -1261,673 +1855,1375 @@ Jenže se mi chtělo čůrat, tak jsem si odskočila na záchod. Nevím, jestli 
 
 Tvá Zlobivá Kočička.`,
 
-      automaticReply:
-        "Asi si mě s někým pleteš."
-    };
+
+  /* ===========================================================
+     PŘEDEM DANÁ ODPOVĚĎ
+     =========================================================== */
+
+  automaticReply:
+    "Asi si mě s někým pleteš.",
 
 
-    // ============================================================
-    // VÝCHOZÍ PROFILOVÁ FOTOGRAFIE
-    // ============================================================
+  /*
+    Jak dlouho poskakují tři tečky.
 
-    const DEFAULT_OWN_AVATAR =
-      "data:image/svg+xml;charset=UTF-8," +
-      encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
-          <defs>
-            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#49354f"/>
-              <stop offset="1" stop-color="#18131d"/>
-            </linearGradient>
-          </defs>
+    3000 = 3 sekundy
+  */
 
-          <rect
-            width="300"
-            height="300"
-            fill="url(#g)"
+  replyDelay:
+    3000
+
+};
+
+
+
+/* =============================================================
+   ANONYMNÍ VÝCHOZÍ AVATAR
+   ============================================================= */
+
+const DEFAULT_AVATAR =
+
+  "data:image/svg+xml;charset=UTF-8," +
+
+  encodeURIComponent(`
+
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="300"
+      height="300"
+    >
+
+      <defs>
+
+        <linearGradient
+          id="g"
+          x1="0"
+          y1="0"
+          x2="1"
+          y2="1"
+        >
+
+          <stop
+            offset="0"
+            stop-color="#49354f"
           />
 
-          <circle
-            cx="150"
-            cy="112"
-            r="54"
-            fill="#8b7c91"
+          <stop
+            offset="1"
+            stop-color="#18131d"
           />
 
-          <path
-            d="M56 282c7-62 42-96 94-96s87 34 94 96"
-            fill="#8b7c91"
-          />
+        </linearGradient>
 
-        </svg>
-      `);
+      </defs>
 
 
-    // ============================================================
-    // POHLEDY
-    // ============================================================
+      <rect
+        width="300"
+        height="300"
+        fill="url(#g)"
+      />
 
-    const views = {
 
-      home:
-        document.getElementById("homeView"),
+      <circle
+        cx="150"
+        cy="112"
+        r="54"
+        fill="#8b7c91"
+      />
 
-      messenger:
-        document.getElementById("messengerView"),
 
-      ownProfile:
-        document.getElementById("ownProfileView"),
+      <path
+        d="M56 282c7-62 42-96 94-96s87 34 94 96"
+        fill="#8b7c91"
+      />
 
-      senderProfile:
-        document.getElementById("senderProfileView")
 
-    };
+    </svg>
 
+  `);
 
-    const backBtn =
-      document.getElementById("backBtn");
 
-    const photoInput =
-      document.getElementById("photoInput");
 
-    const replyField =
-      document.getElementById("replyField");
+/* =============================================================
+   ELEMENTY
+   ============================================================= */
 
-    const replyOptions =
-      document.getElementById("replyOptions");
+const views = {
 
-    const heartButton =
-      document.getElementById("heartButton");
+  home:
+    document.getElementById(
+      "homeView"
+    ),
 
-    const messages =
-      document.getElementById("messages");
+  messenger:
+    document.getElementById(
+      "messengerView"
+    ),
 
+  ownProfile:
+    document.getElementById(
+      "ownProfileView"
+    ),
 
-    let currentView = "home";
-    let previousView = "home";
+  senderProfile:
+    document.getElementById(
+      "senderProfileView"
+    )
 
+};
 
-    function showView(name, remember = true) {
 
-      if (
-        remember &&
-        currentView !== name
-      ) {
-        previousView = currentView;
-      }
+const backBtn =
+  document.getElementById(
+    "backBtn"
+  );
 
-      currentView = name;
 
-      Object
-        .values(views)
-        .forEach(view => {
-          view.classList.remove("active");
-        });
+const photoInput =
+  document.getElementById(
+    "photoInput"
+  );
 
-      views[name].classList.add("active");
 
+const replyField =
+  document.getElementById(
+    "replyField"
+  );
 
-      const title =
-        document.getElementById("topbarTitle");
 
-      const subtitle =
-        document.getElementById("topbarSubtitle");
+const replyOptions =
+  document.getElementById(
+    "replyOptions"
+  );
 
 
-      if (name === "home") {
+const heartButton =
+  document.getElementById(
+    "heartButton"
+  );
 
-        title.textContent =
-          "Zprávy";
 
-        subtitle.textContent =
-          "Máte jednu nepřečtenou zprávu";
+const messages =
+  document.getElementById(
+    "messages"
+  );
 
-        backBtn.classList.remove("visible");
-      }
 
+let currentView =
+  "home";
 
-      if (name === "messenger") {
 
-        title.textContent =
-          "Konverzace";
 
-        subtitle.textContent =
-          CONFIG.senderProfile.nickname;
+/* =============================================================
+   NAVIGACE MEZI STRÁNKAMI
+   ============================================================= */
 
-        backBtn.classList.add("visible");
+function showView(name) {
 
-        markAsRead();
-      }
+  currentView =
+    name;
 
 
-      if (name === "ownProfile") {
+  Object
+    .values(views)
+    .forEach(view => {
 
-        title.textContent =
-          "Můj profil";
+      view
+        .classList
+        .remove("active");
 
-        subtitle.textContent =
-          CONFIG.ownProfile.nickname;
+    });
 
-        backBtn.classList.add("visible");
-      }
 
+  views[name]
+    .classList
+    .add("active");
 
-      if (name === "senderProfile") {
 
-        title.textContent =
-          "Profil uživatele";
-
-        subtitle.textContent =
-          CONFIG.senderProfile.nickname;
-
-        backBtn.classList.add("visible");
-      }
-
-    }
-
-
-    // ============================================================
-    // PŘEČTENÍ ZPRÁVY
-    // ============================================================
-
-    function markAsRead() {
-
-      const preview =
-        document.getElementById("messagePreview");
-
-      preview.classList.remove("unread");
-      preview.classList.add("read");
-
-      document
-        .getElementById("unreadDot")
-        .style.display = "none";
-
-    }
-
-
-    // ============================================================
-    // PROFILOVÁ FOTOGRAFIE HRÁČE
-    // ============================================================
-
-    function triggerUpload(event) {
-
-      event.stopPropagation();
-
-      photoInput.click();
-
-    }
-
-
-    photoInput.addEventListener(
-      "change",
-      event => {
-
-        const file =
-          event.target.files?.[0];
-
-        if (!file) {
-          return;
-        }
-
-        if (!file.type.startsWith("image/")) {
-
-          alert(
-            "Vyberte prosím obrázek."
-          );
-
-          return;
-
-        }
-
-        const reader =
-          new FileReader();
-
-        reader.onload = e => {
-
-          const src =
-            e.target.result;
-
-          document
-            .getElementById("ownAvatar")
-            .src = src;
-
-          document
-            .getElementById("ownAvatarLarge")
-            .src = src;
-
-        };
-
-        reader.readAsDataURL(file);
-
-      }
+  const title =
+    document.getElementById(
+      "topbarTitle"
     );
 
 
-    // ============================================================
-    // SRDÍČKO / LIKE
-    // ============================================================
-
-    function applyLikeState() {
-
-      const liked =
-        localStorage.getItem("nocturnaLiked") === "1";
-
-      heartButton.classList.toggle(
-        "liked",
-        liked
-      );
-
-      heartButton.textContent =
-        liked ? "♥" : "♥";
-
-    }
-
-
-    heartButton.addEventListener(
-      "click",
-      () => {
-
-        const liked =
-          localStorage.getItem("nocturnaLiked") === "1";
-
-        localStorage.setItem(
-          "nocturnaLiked",
-          liked ? "0" : "1"
-        );
-
-        applyLikeState();
-
-      }
+  const subtitle =
+    document.getElementById(
+      "topbarSubtitle"
     );
 
 
-    // ============================================================
-    // ODPOVĚĎ
-    // ============================================================
 
-    function getReplyState() {
+  if (
+    name === "home"
+  ) {
 
-      return localStorage.getItem(
-        "nocturnaReplyState"
+    title.textContent =
+      "Zprávy";
+
+
+    subtitle.textContent =
+      "Máte jednu nepřečtenou zprávu";
+
+
+    backBtn
+      .classList
+      .remove("visible");
+
+  }
+
+
+
+  if (
+    name === "messenger"
+  ) {
+
+    title.textContent =
+      "Konverzace";
+
+
+    subtitle.textContent =
+      CONFIG.senderProfile.nickname;
+
+
+    backBtn
+      .classList
+      .add("visible");
+
+
+    markAsRead();
+
+
+    setTimeout(() => {
+
+      messages.scrollTop =
+        messages.scrollHeight;
+
+    }, 20);
+
+  }
+
+
+
+  if (
+    name === "ownProfile"
+  ) {
+
+    title.textContent =
+      "Můj profil";
+
+
+    subtitle.textContent =
+      CONFIG.ownProfile.nickname;
+
+
+    backBtn
+      .classList
+      .add("visible");
+
+  }
+
+
+
+  if (
+    name === "senderProfile"
+  ) {
+
+    title.textContent =
+      "Profil uživatele";
+
+
+    subtitle.textContent =
+      CONFIG.senderProfile.nickname;
+
+
+    backBtn
+      .classList
+      .add("visible");
+
+  }
+
+}
+
+
+
+/* =============================================================
+   OZNAČENÍ ZPRÁVY JAKO PŘEČTENÉ
+   ============================================================= */
+
+function markAsRead() {
+
+  const preview =
+    document.getElementById(
+      "messagePreview"
+    );
+
+
+  preview
+    .classList
+    .remove("unread");
+
+
+  preview
+    .classList
+    .add("read");
+
+
+  document
+    .getElementById(
+      "unreadDot"
+    )
+    .style
+    .display =
+      "none";
+
+
+  document
+    .getElementById(
+      "previewStatus"
+    )
+    .textContent =
+      "Zobrazit konverzaci";
+
+}
+
+
+
+/* =============================================================
+   NAHRÁNÍ FOTKY KRÁLE HROZNÝŠŮ RUČNĚ
+   ============================================================= */
+
+function triggerUpload(event) {
+
+  event.stopPropagation();
+
+  photoInput.click();
+
+}
+
+
+
+photoInput.addEventListener(
+
+  "change",
+
+  event => {
+
+
+    const file =
+      event.target.files?.[0];
+
+
+    if (!file) {
+      return;
+    }
+
+
+    if (
+      !file.type.startsWith("image/")
+    ) {
+
+      alert(
+        "Vyberte prosím obrázek."
       );
+
+      return;
 
     }
 
 
-    function setReplyState(state) {
+    const reader =
+      new FileReader();
 
-      localStorage.setItem(
-        "nocturnaReplyState",
-        state
-      );
 
+    reader.onload =
+      e => {
+
+
+        const src =
+          e.target.result;
+
+
+        document
+          .getElementById(
+            "ownAvatar"
+          )
+          .src =
+            src;
+
+
+        document
+          .getElementById(
+            "ownAvatarLarge"
+          )
+          .src =
+            src;
+
+      };
+
+
+    reader.readAsDataURL(
+      file
+    );
+
+  }
+
+);
+
+
+
+/* =============================================================
+   SRDÍČKO / LIKE
+   ============================================================= */
+
+function applyLikeState() {
+
+  const liked =
+
+    localStorage.getItem(
+      "nocturnoLiked"
+    ) === "1";
+
+
+  heartButton
+    .classList
+    .toggle(
+      "liked",
+      liked
+    );
+
+}
+
+
+
+heartButton.addEventListener(
+
+  "click",
+
+  () => {
+
+
+    const liked =
+
+      localStorage.getItem(
+        "nocturnoLiked"
+      ) === "1";
+
+
+    localStorage.setItem(
+
+      "nocturnoLiked",
+
+      liked
+        ? "0"
+        : "1"
+
+    );
+
+
+    applyLikeState();
+
+  }
+
+);
+
+
+
+/* =============================================================
+   STAV ODPOVĚDI
+   ============================================================= */
+
+function getReplyState() {
+
+  return localStorage.getItem(
+    "nocturnoReplyState"
+  );
+
+}
+
+
+function setReplyState(state) {
+
+  localStorage.setItem(
+
+    "nocturnoReplyState",
+
+    state
+
+  );
+
+}
+
+
+
+/* =============================================================
+   KLIKNUTÍ NA ODPOVĚDNÍ OKÉNKO
+   ============================================================= */
+
+replyField.addEventListener(
+
+  "click",
+
+  () => {
+
+
+    /*
+      Jestli už hráč zvolil odpověď
+      nebo ignorování, menu se už
+      znovu neotevře.
+    */
+
+    if (
+      getReplyState()
+    ) {
+      return;
     }
 
 
-    function openReplyOptions() {
-
-      if (getReplyState()) {
-        return;
-      }
-
-      replyOptions.classList.toggle(
+    replyOptions
+      .classList
+      .toggle(
         "visible"
       );
 
+  }
+
+);
+
+
+
+/* =============================================================
+   IGNOROVAT
+   ============================================================= */
+
+document
+  .getElementById(
+    "ignoreBtn"
+  )
+  .addEventListener(
+
+    "click",
+
+    () => {
+
+
+      setReplyState(
+        "ignored"
+      );
+
+
+      replyOptions
+        .classList
+        .remove(
+          "visible"
+        );
+
+
+      renderReplyState();
+
     }
 
+  );
 
-    replyField.addEventListener(
-      "click",
-      openReplyOptions
+
+
+/* =============================================================
+   ODPOVĚDĚT
+   ============================================================= */
+
+document
+  .getElementById(
+    "answerBtn"
+  )
+  .addEventListener(
+
+    "click",
+
+    () => {
+
+
+      setReplyState(
+        "answered"
+      );
+
+
+      replyOptions
+        .classList
+        .remove(
+          "visible"
+        );
+
+
+      startReplyAnimation();
+
+    }
+
+  );
+
+
+
+/* =============================================================
+   ANIMACE TŘÍ TEČEK
+   ============================================================= */
+
+function startReplyAnimation() {
+
+
+  replyField.textContent =
+    "Odesílání odpovědi…";
+
+
+  replyField
+    .classList
+    .add(
+      "disabled"
     );
 
 
-    // ============================================================
-    // IGNOROVAT
-    // ============================================================
 
-    document
-      .getElementById("ignoreBtn")
-      .addEventListener(
-        "click",
-        () => {
+  /*
+    Odstraníme případnou
+    existující odpověď.
+  */
 
-          setReplyState("ignored");
+  const previousReply =
 
-          replyOptions
-            .classList
-            .remove("visible");
-
-          renderReplyState();
-
-        }
-      );
+    document.getElementById(
+      "automaticReplyBubble"
+    );
 
 
-    // ============================================================
-    // ODPOVĚDĚT
-    // ============================================================
+  if (
+    previousReply
+  ) {
 
-    document
-      .getElementById("answerBtn")
-      .addEventListener(
-        "click",
-        () => {
+    previousReply.remove();
 
-          setReplyState("answered");
-
-          replyOptions
-            .classList
-            .remove("visible");
-
-          renderReplyState();
-
-        }
-      );
+  }
 
 
-    function renderReplyState() {
 
-      const state =
-        getReplyState();
+  const previousTyping =
 
-      const oldReply =
+    document.getElementById(
+      "typingIndicator"
+    );
+
+
+  if (
+    previousTyping
+  ) {
+
+    previousTyping.remove();
+
+  }
+
+
+
+  /*
+    Vytvoření tří teček.
+  */
+
+  const typing =
+    document.createElement(
+      "div"
+    );
+
+
+  typing.className =
+    "typing-indicator";
+
+
+  typing.id =
+    "typingIndicator";
+
+
+  typing.innerHTML = `
+
+    <span></span>
+    <span></span>
+    <span></span>
+
+  `;
+
+
+  messages.appendChild(
+    typing
+  );
+
+
+  setTimeout(
+
+    () => {
+
+      messages.scrollTop =
+        messages.scrollHeight;
+
+    },
+
+    20
+
+  );
+
+
+
+  /*
+    Po několika sekundách
+    tečky zmizí.
+  */
+
+  setTimeout(
+
+    () => {
+
+
+      const typingNow =
+
         document.getElementById(
-          "automaticReplyBubble"
+          "typingIndicator"
         );
 
-      if (oldReply) {
-        oldReply.remove();
+
+      if (
+        typingNow
+      ) {
+
+        typingNow.remove();
+
       }
 
 
-      if (state === "ignored") {
+      showAutomaticReply();
 
-        replyField.textContent =
-          "Konverzace byla ignorována";
+    },
 
-        replyField.classList.add(
-          "disabled"
-        );
+    CONFIG.replyDelay
 
-        return;
-      }
+  );
+
+}
 
 
-      if (state === "answered") {
 
-        replyField.textContent =
-          "Odpověď byla odeslána";
+/* =============================================================
+   AUTOMATICKÁ ODPOVĚĎ
+   ============================================================= */
 
-        replyField.classList.add(
-          "disabled"
-        );
+function showAutomaticReply() {
 
 
-        const reply =
-          document.createElement("div");
+  /*
+    Aby nevznikla odpověď dvakrát.
+  */
 
-        reply.className =
-          "message outgoing";
+  if (
 
-        reply.id =
-          "automaticReplyBubble";
+    document.getElementById(
+      "automaticReplyBubble"
+    )
 
-        reply.textContent =
-          CONFIG.automaticReply;
+  ) {
 
-        messages.appendChild(reply);
+    return;
 
-        setTimeout(
-          () => {
-
-            messages.scrollTop =
-              messages.scrollHeight;
-
-          },
-          20
-        );
-
-        return;
-      }
+  }
 
 
-      replyField.textContent =
-        "Odpovědět…";
 
-      replyField.classList.remove(
+  const reply =
+    document.createElement(
+      "div"
+    );
+
+
+  reply.className =
+    "message outgoing";
+
+
+  reply.id =
+    "automaticReplyBubble";
+
+
+  reply.textContent =
+    CONFIG.automaticReply;
+
+
+  messages.appendChild(
+    reply
+  );
+
+
+  replyField.textContent =
+    "Odpověď byla odeslána";
+
+
+  replyField
+    .classList
+    .add(
+      "disabled"
+    );
+
+
+  setTimeout(
+
+    () => {
+
+      messages.scrollTop =
+        messages.scrollHeight;
+
+    },
+
+    20
+
+  );
+
+}
+
+
+
+/* =============================================================
+   VYKRESLENÍ ULOŽENÉHO STAVU
+   ============================================================= */
+
+function renderReplyState() {
+
+
+  const state =
+    getReplyState();
+
+
+
+  if (
+    state === "ignored"
+  ) {
+
+
+    replyField.textContent =
+      "Konverzace byla ignorována";
+
+
+    replyField
+      .classList
+      .add(
         "disabled"
       );
 
+
+    return;
+
+  }
+
+
+
+  if (
+    state === "answered"
+  ) {
+
+
+    /*
+      Při novém načtení stránky
+      už se tečky neopakují.
+
+      Zobrazí se rovnou dříve
+      odeslaná zpráva.
+    */
+
+    showAutomaticReply();
+
+    return;
+
+  }
+
+
+
+  replyField.textContent =
+    "Odpovědět…";
+
+
+  replyField
+    .classList
+    .remove(
+      "disabled"
+    );
+
+}
+
+
+
+/* =============================================================
+   KLIKNUTÍ MIMO NABÍDKU ODPOVĚDI
+   ============================================================= */
+
+document.addEventListener(
+
+  "click",
+
+  event => {
+
+
+    if (
+
+      !replyOptions.contains(
+        event.target
+      )
+
+      &&
+
+      !replyField.contains(
+        event.target
+      )
+
+    ) {
+
+
+      replyOptions
+        .classList
+        .remove(
+          "visible"
+        );
+
     }
 
+  }
 
-    // ============================================================
-    // ZAVŘENÍ MENU ODPOVĚDI KLIKNUTÍM JINAM
-    // ============================================================
-
-    document.addEventListener(
-      "click",
-      event => {
-
-        if (
-          !replyOptions.contains(event.target) &&
-          !replyField.contains(event.target)
-        ) {
-
-          replyOptions.classList.remove(
-            "visible"
-          );
-
-        }
-
-      }
-    );
+);
 
 
-    // ============================================================
-    // NAVIGACE
-    // ============================================================
 
-    document
-      .getElementById("ownProfileBtn")
-      .addEventListener(
-        "click",
-        () => showView("ownProfile")
+/* =============================================================
+   TLAČÍTKA NAVIGACE
+   ============================================================= */
+
+document
+  .getElementById(
+    "ownProfileBtn"
+  )
+  .addEventListener(
+
+    "click",
+
+    () => {
+
+      showView(
+        "ownProfile"
+      );
+
+    }
+
+  );
+
+
+
+document
+  .getElementById(
+    "mobileProfileBtn"
+  )
+  .addEventListener(
+
+    "click",
+
+    () => {
+
+      showView(
+        "ownProfile"
+      );
+
+    }
+
+  );
+
+
+
+document
+  .getElementById(
+    "messagePreview"
+  )
+  .addEventListener(
+
+    "click",
+
+    () => {
+
+      showView(
+        "messenger"
+      );
+
+    }
+
+  );
+
+
+
+document
+  .getElementById(
+    "openMessageBtn"
+  )
+  .addEventListener(
+
+    "click",
+
+    () => {
+
+      showView(
+        "messenger"
+      );
+
+    }
+
+  );
+
+
+
+document
+  .getElementById(
+    "senderProfileBtn"
+  )
+  .addEventListener(
+
+    "click",
+
+    () => {
+
+      showView(
+        "senderProfile"
+      );
+
+    }
+
+  );
+
+
+
+document
+  .getElementById(
+    "uploadTrigger"
+  )
+  .addEventListener(
+
+    "click",
+
+    triggerUpload
+
+  );
+
+
+
+document
+  .getElementById(
+    "uploadTriggerLarge"
+  )
+  .addEventListener(
+
+    "click",
+
+    triggerUpload
+
+  );
+
+
+
+backBtn.addEventListener(
+
+  "click",
+
+  () => {
+
+
+    if (
+      currentView ===
+      "senderProfile"
+    ) {
+
+
+      showView(
+        "messenger"
       );
 
 
-    document
-      .getElementById("mobileProfileBtn")
-      .addEventListener(
-        "click",
-        () => showView("ownProfile")
+    } else {
+
+
+      showView(
+        "home"
       );
 
+    }
 
-    document
-      .getElementById("messagePreview")
-      .addEventListener(
-        "click",
-        () => showView("messenger")
-      );
+  }
+
+);
 
 
-    document
-      .getElementById("openMessageBtn")
-      .addEventListener(
-        "click",
-        () => showView("messenger")
-      );
+
+/* =============================================================
+   NAPLNĚNÍ PROFILŮ
+   ============================================================= */
+
+function applyConfig() {
 
 
-    document
-      .getElementById("senderProfileBtn")
-      .addEventListener(
-        "click",
-        () => showView("senderProfile")
-      );
+  const own =
+    CONFIG.ownProfile;
 
 
-    document
-      .getElementById("uploadTrigger")
-      .addEventListener(
-        "click",
-        triggerUpload
-      );
+  const sender =
+    CONFIG.senderProfile;
 
 
-    document
-      .getElementById("uploadTriggerLarge")
-      .addEventListener(
-        "click",
-        triggerUpload
-      );
+
+  /* ===========================================================
+     KRÁL HROZNÝŠŮ
+     =========================================================== */
 
 
-    backBtn.addEventListener(
-      "click",
-      () => {
-
-        if (
-          currentView === "senderProfile"
-        ) {
-
-          showView(
-            "messenger",
-            false
-          );
-
-        } else {
-
-          showView(
-            "home",
-            false
-          );
-
-        }
-
-      }
-    );
+  document
+    .getElementById(
+      "ownNicknameSidebar"
+    )
+    .textContent =
+      own.nickname;
 
 
-    // ============================================================
-    // NAPLNĚNÍ OBSAHU
-    // ============================================================
 
-    function applyConfig() {
-
-      const ownNickname =
-        CONFIG.ownProfile.nickname;
-
-      const sender =
-        CONFIG.senderProfile;
+  document
+    .getElementById(
+      "ownNicknameProfile"
+    )
+    .textContent =
+      own.nickname;
 
 
-      document
-        .getElementById("ownNicknameSidebar")
-        .textContent = ownNickname;
 
-      document
-        .getElementById("ownNicknameProfile")
-        .textContent = ownNickname;
-
-
-      document
-        .getElementById("senderNicknameSidebar")
-        .textContent = sender.nickname;
-
-      document
-        .getElementById("senderNicknameChat")
-        .textContent = sender.nickname;
-
-      document
-        .getElementById("senderNicknameProfile")
-        .textContent = sender.nickname;
+  document
+    .getElementById(
+      "ownAge"
+    )
+    .textContent =
+      own.age;
 
 
-      document
-        .getElementById("senderStatus")
-        .textContent = sender.status;
 
-      document
-        .getElementById("senderAge")
-        .textContent = sender.age;
-
-      document
-        .getElementById("senderLocation")
-        .textContent = sender.location;
-
-      document
-        .getElementById("senderLookingFor")
-        .textContent = sender.lookingFor;
-
-      document
-        .getElementById("senderBio")
-        .textContent = sender.bio;
+  document
+    .getElementById(
+      "ownFavouriteDrink"
+    )
+    .textContent =
+      own.favouriteDrink;
 
 
-      document
-        .getElementById("messageText")
-        .textContent = CONFIG.messageText;
+
+  document
+    .getElementById(
+      "ownReservation"
+    )
+    .textContent =
+      own.usualReservation;
 
 
-      const senderImages = [
 
-        document.getElementById(
-          "senderAvatarSidebar"
-        ),
+  /*
+    PROFILOVÁ FOTKA KRÁLE HROZNÝŠŮ.
 
-        document.getElementById(
-          "senderAvatarChat"
-        ),
+    Pokud je photoUrl prázdná,
+    použije se anonymní avatar.
+  */
 
-        document.getElementById(
-          "senderAvatarProfile"
-        )
+  const ownPhoto =
 
-      ];
+    own.photoUrl
+      ? own.photoUrl
+      : DEFAULT_AVATAR;
 
 
-      senderImages.forEach(
-        img => {
 
-          img.src =
-            sender.photoUrl;
+  const ownImages = [
+
+    document.getElementById(
+      "ownAvatar"
+    ),
+
+    document.getElementById(
+      "ownAvatarLarge"
+    )
+
+  ];
+
+
+
+  ownImages.forEach(
+
+    img => {
+
+
+      img.src =
+        ownPhoto;
+
+
+      img.onerror =
+        () => {
+
 
           img.onerror =
-            () => {
-
-              img.src =
-                DEFAULT_OWN_AVATAR;
-
-            };
-
-        }
-      );
+            null;
 
 
-      document
-        .getElementById("ownAvatar")
-        .src = DEFAULT_OWN_AVATAR;
+          img.src =
+            DEFAULT_AVATAR;
 
-      document
-        .getElementById("ownAvatarLarge")
-        .src = DEFAULT_OWN_AVATAR;
+        };
 
     }
 
+  );
 
-    // ============================================================
-    // START
-    // ============================================================
 
-    applyConfig();
-    applyLikeState();
-    renderReplyState();
 
-  </script>
+  /* ===========================================================
+     ZLOBIVÁ KOČIČKA
+     =========================================================== */
+
+
+  document
+    .getElementById(
+      "senderNicknameSidebar"
+    )
+    .textContent =
+      sender.nickname;
+
+
+
+  document
+    .getElementById(
+      "senderNicknameChat"
+    )
+    .textContent =
+      sender.nickname;
+
+
+
+  document
+    .getElementById(
+      "senderNicknameProfile"
+    )
+    .textContent =
+      sender.nickname;
+
+
+
+  document
+    .getElementById(
+      "senderAge"
+    )
+    .textContent =
+      sender.age;
+
+
+
+  document
+    .getElementById(
+      "senderFavouriteDrink"
+    )
+    .textContent =
+      sender.favouriteDrink;
+
+
+
+  document
+    .getElementById(
+      "senderReservation"
+    )
+    .textContent =
+      sender.usualReservation;
+
+
+
+  /*
+    PROFILOVÁ FOTKA ZLOBIVÉ KOČIČKY.
+  */
+
+  const senderPhoto =
+
+    sender.photoUrl
+      ? sender.photoUrl
+      : DEFAULT_AVATAR;
+
+
+
+  const senderImages = [
+
+    document.getElementById(
+      "senderAvatarSidebar"
+    ),
+
+    document.getElementById(
+      "senderAvatarChat"
+    ),
+
+    document.getElementById(
+      "senderAvatarProfile"
+    )
+
+  ];
+
+
+
+  senderImages.forEach(
+
+    img => {
+
+
+      img.src =
+        senderPhoto;
+
+
+      img.onerror =
+        () => {
+
+
+          img.onerror =
+            null;
+
+
+          img.src =
+            DEFAULT_AVATAR;
+
+        };
+
+    }
+
+  );
+
+
+
+  /* ===========================================================
+     TEXT ZPRÁVY
+     =========================================================== */
+
+
+  document
+    .getElementById(
+      "messageText"
+    )
+    .textContent =
+      CONFIG.messageText;
+
+}
+
+
+
+/* =============================================================
+   START
+   ============================================================= */
+
+applyConfig();
+
+applyLikeState();
+
+renderReplyState();
+
+
+</script>
+
 
 </body>
 </html>
