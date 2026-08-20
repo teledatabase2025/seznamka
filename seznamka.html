@@ -1947,13 +1947,15 @@ Tvá Zlobivá Kočička.`
    ============================================================= */
 
 function getVariant() {
-  const params = new URLSearchParams(window.location.search);
+  // Čteme celou URL, takže funguje spolehlivě i na GitHub Pages.
+  // Podporuje: ?seznamkaext1 / ?seznamkaext2 / ?seznamkaext3
+  const url = window.location.href.toLowerCase();
 
-  if (params.has("seznamkaext3")) {
+  if (url.includes("seznamkaext3")) {
     return 3;
   }
 
-  if (params.has("seznamkaext2")) {
+  if (url.includes("seznamkaext2")) {
     return 2;
   }
 
@@ -2063,6 +2065,32 @@ function markAsRead() {
 
 
 /* =============================================================
+   TEXTY ÚVODU PODLE HERNÍ VARIANTY
+   ============================================================= */
+
+function applyVariantUI() {
+  const eyebrow = document.querySelector(".home-card .eyebrow");
+  const homeTitle = document.querySelector(".home-card h3");
+  const homeText = document.querySelector(".home-card p");
+  const previewStatus = document.getElementById("previewStatus");
+  const topbarSubtitle = document.getElementById("topbarSubtitle");
+
+  if (seznamkaVarianta === 1) {
+    eyebrow.textContent = "Nové spojení";
+    homeTitle.textContent = "Někdo vám napsal.";
+    homeText.textContent = "Otevřete zprávu a zjistěte, kdo se s vámi chce seznámit. Profil odesílatele je dostupný přímo z konverzace.";
+  } else {
+    eyebrow.textContent = "Nová zpráva";
+    homeTitle.textContent = "Zlobivá kočička vám posílá novou zprávu.";
+    homeText.textContent = "Otevřete zprávu a zobrazte konverzaci.";
+  }
+
+  previewStatus.textContent = "Nová zpráva";
+  topbarSubtitle.textContent = "Máte jednu nepřečtenou zprávu";
+}
+
+
+/* =============================================================
    VYKRESLENÍ KONVERZACE
    ============================================================= */
 
@@ -2081,7 +2109,6 @@ function createTextMessage(text, withHeart = false) {
 
     const heart = document.createElement("button");
     heart.className = "heart-button";
-    heart.id = heartButtonId;
     heart.type = "button";
     heart.setAttribute("aria-label", "To se mi líbí");
     heart.title = "To se mi líbí";
@@ -2360,6 +2387,7 @@ backBtn.addEventListener("click", () => {
    ============================================================= */
 
 applyConfig();
+applyVariantUI();
 renderConversation();
 
 </script>
