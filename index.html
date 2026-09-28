@@ -258,33 +258,6 @@
       border-width: 3px;
     }
 
-    .upload-dot {
-      position: absolute;
-
-      right: -2px;
-      bottom: -2px;
-
-      width: 27px;
-      height: 27px;
-
-      border: 0;
-      border-radius: 50%;
-
-      display: grid;
-      place-items: center;
-
-      background: var(--accent);
-
-      color: white;
-
-      cursor: pointer;
-
-      font-size: 16px;
-
-      box-shadow:
-        0 5px 16px rgba(0,0,0,.4);
-    }
-
 
     /* =========================================================
        VLASTNÍ PROFIL V LEVÉM PANELU
@@ -1011,9 +984,17 @@
     }
 
     @keyframes warningAppear {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
+
 
     /* =========================================================
        HLASOVÁ ZPRÁVA
@@ -1120,6 +1101,7 @@
       color: #d7a7b5;
       font-size: 11px;
     }
+
 
     /* =========================================================
        PROFILY
@@ -1324,7 +1306,6 @@
       .voice-duration {
         display: none;
       }
-
     }
 
   </style>
@@ -1407,14 +1388,6 @@
           alt="Král Hroznýšů"
         >
 
-        <span
-          class="upload-dot"
-          id="uploadTrigger"
-          title="Nahrát fotografii"
-        >
-          +
-        </span>
-
       </div>
 
 
@@ -1433,14 +1406,6 @@
       </div>
 
     </button>
-
-
-    <input
-      type="file"
-      id="photoInput"
-      accept="image/*"
-      hidden
-    >
 
 
 
@@ -1697,16 +1662,6 @@
           >
 
 
-          <button
-            class="upload-dot"
-            id="uploadTriggerLarge"
-            type="button"
-            title="Nahrát fotografii"
-          >
-            +
-          </button>
-
-
         </div>
 
 
@@ -1904,7 +1859,7 @@ const CONFIG = {
 
   ownProfile: {
     nickname: "Král Hroznýšů",
-    photoUrl: "",
+    photoUrl: "KH.png",
     age: "26–35",
     favouriteDrink: "Old Fashioned",
     usualReservation: "místo u baru"
@@ -1912,7 +1867,7 @@ const CONFIG = {
 
   senderProfile: {
     nickname: "Zlobivá kočička",
-    photoUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80",
+    photoUrl: "ZK.png",
     age: "26–35",
     favouriteDrink: "Daiquiri",
     usualReservation: "bez rezervace"
@@ -1998,7 +1953,6 @@ const views = {
 };
 
 const backBtn = document.getElementById("backBtn");
-const photoInput = document.getElementById("photoInput");
 const messages = document.getElementById("messages");
 const replyForm = document.getElementById("replyForm");
 const replyField = document.getElementById("replyField");
@@ -2078,15 +2032,19 @@ function applyVariantUI() {
   if (ACTIVE_VARIANT === 1) {
     eyebrow.textContent = "Nové spojení";
     homeTitle.textContent = "Někdo vám napsal.";
-    homeText.textContent = "Otevřete zprávu a zjistěte, kdo se s vámi chce seznámit. Profil odesílatele je dostupný přímo z konverzace.";
+    homeText.textContent =
+      "Otevřete zprávu a zjistěte, kdo se s vámi chce seznámit. Profil odesílatele je dostupný přímo z konverzace.";
   } else {
     eyebrow.textContent = "Nová zpráva";
-    homeTitle.textContent = "Zlobivá kočička vám posílá novou zprávu.";
-    homeText.textContent = "Otevřete zprávu a zobrazte konverzaci.";
+    homeTitle.textContent =
+      "Zlobivá kočička vám posílá novou zprávu.";
+    homeText.textContent =
+      "Otevřete zprávu a zobrazte konverzaci.";
   }
 
   previewStatus.textContent = "Nová zpráva";
-  topbarSubtitle.textContent = "Máte jednu nepřečtenou zprávu";
+  topbarSubtitle.textContent =
+    "Máte jednu nepřečtenou zprávu";
 }
 
 
@@ -2110,7 +2068,10 @@ function createTextMessage(text, withHeart = false) {
     const heart = document.createElement("button");
     heart.className = "heart-button";
     heart.type = "button";
-    heart.setAttribute("aria-label", "To se mi líbí");
+    heart.setAttribute(
+      "aria-label",
+      "To se mi líbí"
+    );
     heart.title = "To se mi líbí";
     heart.textContent = "♥";
 
@@ -2125,124 +2086,284 @@ function createTextMessage(text, withHeart = false) {
   return row;
 }
 
+
 function formatTime(seconds) {
   if (!Number.isFinite(seconds) || seconds < 0) {
     return "0:00";
   }
 
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
+  const mins =
+    Math.floor(seconds / 60);
+
+  const secs =
+    Math.floor(seconds % 60)
+      .toString()
+      .padStart(2, "0");
+
   return `${mins}:${secs}`;
 }
 
+
 function createVoiceMessage() {
-  const wrap = document.createElement("div");
-  wrap.className = "voice-message";
+  const wrap =
+    document.createElement("div");
+
+  wrap.className =
+    "voice-message";
 
   wrap.innerHTML = `
-    <div class="voice-label">Hlasová zpráva</div>
-
-    <div class="voice-player">
-      <button class="voice-play" type="button" aria-label="Přehrát hlasovou zprávu">▶</button>
-
-      <div class="voice-track-wrap">
-        <input class="voice-progress" type="range" min="0" max="1000" value="0" aria-label="Pozice přehrávání">
-        <div class="voice-times">
-          <span class="voice-current">0:00</span>
-          <span class="voice-total">0:00</span>
-        </div>
-      </div>
-
-      <div class="voice-duration">0:00</div>
+    <div class="voice-label">
+      Hlasová zpráva
     </div>
 
-    <div class="voice-error">Zvukový soubor se nepodařilo načíst.</div>
+    <div class="voice-player">
+
+      <button
+        class="voice-play"
+        type="button"
+        aria-label="Přehrát hlasovou zprávu"
+      >
+        ▶
+      </button>
+
+      <div class="voice-track-wrap">
+
+        <input
+          class="voice-progress"
+          type="range"
+          min="0"
+          max="1000"
+          value="0"
+          aria-label="Pozice přehrávání"
+        >
+
+        <div class="voice-times">
+
+          <span class="voice-current">
+            0:00
+          </span>
+
+          <span class="voice-total">
+            0:00
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="voice-duration">
+        0:00
+      </div>
+
+    </div>
+
+    <div class="voice-error">
+      Zvukový soubor se nepodařilo načíst.
+    </div>
 
     <audio preload="metadata"></audio>
   `;
 
-  const audio = wrap.querySelector("audio");
-  const play = wrap.querySelector(".voice-play");
-  const progress = wrap.querySelector(".voice-progress");
-  const current = wrap.querySelector(".voice-current");
-  const total = wrap.querySelector(".voice-total");
-  const duration = wrap.querySelector(".voice-duration");
-  const error = wrap.querySelector(".voice-error");
 
-  audio.src = CONFIG.voiceMessageFile;
+  const audio =
+    wrap.querySelector("audio");
 
-  audio.addEventListener("loadedmetadata", () => {
-    const t = formatTime(audio.duration);
-    total.textContent = t;
-    duration.textContent = t;
-  });
+  const play =
+    wrap.querySelector(".voice-play");
 
-  audio.addEventListener("timeupdate", () => {
-    current.textContent = formatTime(audio.currentTime);
+  const progress =
+    wrap.querySelector(".voice-progress");
 
-    if (Number.isFinite(audio.duration) && audio.duration > 0) {
-      progress.value = String(Math.round((audio.currentTime / audio.duration) * 1000));
+  const current =
+    wrap.querySelector(".voice-current");
+
+  const total =
+    wrap.querySelector(".voice-total");
+
+  const duration =
+    wrap.querySelector(".voice-duration");
+
+  const error =
+    wrap.querySelector(".voice-error");
+
+
+  audio.src =
+    CONFIG.voiceMessageFile;
+
+
+  audio.addEventListener(
+    "loadedmetadata",
+    () => {
+
+      const t =
+        formatTime(audio.duration);
+
+      total.textContent = t;
+      duration.textContent = t;
+
     }
-  });
+  );
 
-  audio.addEventListener("play", () => {
-    play.textContent = "❚❚";
-    play.setAttribute("aria-label", "Pozastavit hlasovou zprávu");
-  });
 
-  audio.addEventListener("pause", () => {
-    play.textContent = "▶";
-    play.setAttribute("aria-label", "Přehrát hlasovou zprávu");
-  });
+  audio.addEventListener(
+    "timeupdate",
+    () => {
 
-  audio.addEventListener("ended", () => {
-    play.textContent = "▶";
-    progress.value = "0";
-  });
+      current.textContent =
+        formatTime(audio.currentTime);
 
-  audio.addEventListener("error", () => {
-    error.style.display = "block";
-    play.disabled = true;
-  });
+      if (
+        Number.isFinite(audio.duration) &&
+        audio.duration > 0
+      ) {
 
-  play.addEventListener("click", async () => {
-    if (audio.paused) {
-      try {
-        await audio.play();
-      } catch (e) {
-        error.style.display = "block";
+        progress.value =
+          String(
+            Math.round(
+              (
+                audio.currentTime /
+                audio.duration
+              ) * 1000
+            )
+          );
+
       }
-    } else {
-      audio.pause();
-    }
-  });
 
-  progress.addEventListener("input", () => {
-    if (Number.isFinite(audio.duration) && audio.duration > 0) {
-      audio.currentTime = (Number(progress.value) / 1000) * audio.duration;
     }
-  });
+  );
+
+
+  audio.addEventListener(
+    "play",
+    () => {
+
+      play.textContent = "❚❚";
+
+      play.setAttribute(
+        "aria-label",
+        "Pozastavit hlasovou zprávu"
+      );
+
+    }
+  );
+
+
+  audio.addEventListener(
+    "pause",
+    () => {
+
+      play.textContent = "▶";
+
+      play.setAttribute(
+        "aria-label",
+        "Přehrát hlasovou zprávu"
+      );
+
+    }
+  );
+
+
+  audio.addEventListener(
+    "ended",
+    () => {
+
+      play.textContent = "▶";
+      progress.value = "0";
+
+    }
+  );
+
+
+  audio.addEventListener(
+    "error",
+    () => {
+
+      error.style.display =
+        "block";
+
+      play.disabled = true;
+
+    }
+  );
+
+
+  play.addEventListener(
+    "click",
+    async () => {
+
+      if (audio.paused) {
+
+        try {
+
+          await audio.play();
+
+        } catch (e) {
+
+          error.style.display =
+            "block";
+
+        }
+
+      } else {
+
+        audio.pause();
+
+      }
+
+    }
+  );
+
+
+  progress.addEventListener(
+    "input",
+    () => {
+
+      if (
+        Number.isFinite(audio.duration) &&
+        audio.duration > 0
+      ) {
+
+        audio.currentTime =
+          (
+            Number(progress.value) /
+            1000
+          ) *
+          audio.duration;
+
+      }
+
+    }
+  );
+
 
   return wrap;
 }
+
 
 function renderConversation() {
   messages.innerHTML = "";
 
   // Varianta 1, 2 i 3 vždy obsahují první zprávu.
   messages.appendChild(
-    createTextMessage(CONFIG.firstMessage, true)
+    createTextMessage(
+      CONFIG.firstMessage,
+      true
+    )
   );
 
   // Druhý návrat přidá hlasovou zprávu.
   if (ACTIVE_VARIANT >= 2) {
-    messages.appendChild(createVoiceMessage());
+    messages.appendChild(
+      createVoiceMessage()
+    );
   }
 
   // Třetí návrat přidá další novou textovou zprávu.
   if (ACTIVE_VARIANT >= 3) {
     messages.appendChild(
-      createTextMessage(CONFIG.thirdMessage)
+      createTextMessage(
+        CONFIG.thirdMessage
+      )
     );
   }
 }
@@ -2252,23 +2373,31 @@ function renderConversation() {
    BLOKACE ODPOVĚDI – STEJNÁ VE VŠECH TŘECH VARIANTÁCH
    ============================================================= */
 
-replyForm.addEventListener("submit", event => {
-  event.preventDefault();
+replyForm.addEventListener(
+  "submit",
+  event => {
 
-  if (!replyField.value.trim()) {
-    replyField.focus();
-    return;
+    event.preventDefault();
+
+    if (!replyField.value.trim()) {
+      replyField.focus();
+      return;
+    }
+
+    accessWarning.hidden =
+      false;
+
+    setTimeout(() => {
+
+      accessWarning.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
+
+    }, 20);
+
   }
-
-  accessWarning.hidden = false;
-
-  setTimeout(() => {
-    accessWarning.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"
-    });
-  }, 20);
-});
+);
 
 
 /* =============================================================
@@ -2276,110 +2405,266 @@ replyForm.addEventListener("submit", event => {
    ============================================================= */
 
 function applyConfig() {
-  const own = CONFIG.ownProfile;
-  const sender = CONFIG.senderProfile;
+  const own =
+    CONFIG.ownProfile;
 
-  document.getElementById("ownNicknameSidebar").textContent = own.nickname;
-  document.getElementById("ownNicknameProfile").textContent = own.nickname;
-  document.getElementById("ownAge").textContent = own.age;
-  document.getElementById("ownFavouriteDrink").textContent = own.favouriteDrink;
-  document.getElementById("ownReservation").textContent = own.usualReservation;
+  const sender =
+    CONFIG.senderProfile;
 
-  document.getElementById("senderNicknameSidebar").textContent = sender.nickname;
-  document.getElementById("senderNicknameChat").textContent = sender.nickname;
-  document.getElementById("senderNicknameProfile").textContent = sender.nickname;
-  document.getElementById("senderAge").textContent = sender.age;
-  document.getElementById("senderFavouriteDrink").textContent = sender.favouriteDrink;
-  document.getElementById("senderReservation").textContent = sender.usualReservation;
 
-  const ownPhoto = own.photoUrl || DEFAULT_AVATAR;
-  const senderPhoto = sender.photoUrl || DEFAULT_AVATAR;
+  document
+    .getElementById(
+      "ownNicknameSidebar"
+    )
+    .textContent =
+      own.nickname;
 
-  ["ownAvatar", "ownAvatarLarge"].forEach(id => {
-    const img = document.getElementById(id);
-    img.src = ownPhoto;
+
+  document
+    .getElementById(
+      "ownNicknameProfile"
+    )
+    .textContent =
+      own.nickname;
+
+
+  document
+    .getElementById(
+      "ownAge"
+    )
+    .textContent =
+      own.age;
+
+
+  document
+    .getElementById(
+      "ownFavouriteDrink"
+    )
+    .textContent =
+      own.favouriteDrink;
+
+
+  document
+    .getElementById(
+      "ownReservation"
+    )
+    .textContent =
+      own.usualReservation;
+
+
+  document
+    .getElementById(
+      "senderNicknameSidebar"
+    )
+    .textContent =
+      sender.nickname;
+
+
+  document
+    .getElementById(
+      "senderNicknameChat"
+    )
+    .textContent =
+      sender.nickname;
+
+
+  document
+    .getElementById(
+      "senderNicknameProfile"
+    )
+    .textContent =
+      sender.nickname;
+
+
+  document
+    .getElementById(
+      "senderAge"
+    )
+    .textContent =
+      sender.age;
+
+
+  document
+    .getElementById(
+      "senderFavouriteDrink"
+    )
+    .textContent =
+      sender.favouriteDrink;
+
+
+  document
+    .getElementById(
+      "senderReservation"
+    )
+    .textContent =
+      sender.usualReservation;
+
+
+  const ownPhoto =
+    own.photoUrl ||
+    DEFAULT_AVATAR;
+
+  const senderPhoto =
+    sender.photoUrl ||
+    DEFAULT_AVATAR;
+
+
+  [
+    "ownAvatar",
+    "ownAvatarLarge"
+  ].forEach(id => {
+
+    const img =
+      document.getElementById(id);
+
+    img.src =
+      ownPhoto;
+
     img.onerror = () => {
       img.onerror = null;
-      img.src = DEFAULT_AVATAR;
+      img.src =
+        DEFAULT_AVATAR;
     };
+
   });
 
-  ["senderAvatarSidebar", "senderAvatarChat", "senderAvatarProfile"].forEach(id => {
-    const img = document.getElementById(id);
-    img.src = senderPhoto;
+
+  [
+    "senderAvatarSidebar",
+    "senderAvatarChat",
+    "senderAvatarProfile"
+  ].forEach(id => {
+
+    const img =
+      document.getElementById(id);
+
+    img.src =
+      senderPhoto;
+
     img.onerror = () => {
       img.onerror = null;
-      img.src = DEFAULT_AVATAR;
+      img.src =
+        DEFAULT_AVATAR;
     };
+
   });
 
-  const exitSlide = CONFIG.variants[ACTIVE_VARIANT].exitSlide;
-  document.getElementById("exitSite").href =
-    `${CONFIG.gameBaseUrl}?slide=${exitSlide}`;
+
+  const exitSlide =
+    CONFIG
+      .variants[
+        ACTIVE_VARIANT
+      ]
+      .exitSlide;
+
+
+  document
+    .getElementById(
+      "exitSite"
+    )
+    .href =
+      `${CONFIG.gameBaseUrl}?slide=${exitSlide}`;
 }
 
-function triggerUpload(event) {
-  event.stopPropagation();
-  photoInput.click();
-}
-
-photoInput.addEventListener("change", event => {
-  const file = event.target.files?.[0];
-
-  if (!file) {
-    return;
-  }
-
-  if (!file.type.startsWith("image/")) {
-    alert("Vyberte prosím obrázek.");
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = e => {
-    document.getElementById("ownAvatar").src = e.target.result;
-    document.getElementById("ownAvatarLarge").src = e.target.result;
-  };
-
-  reader.readAsDataURL(file);
-});
 
 
 /* =============================================================
    TLAČÍTKA NAVIGACE
    ============================================================= */
 
-document.getElementById("ownProfileBtn").addEventListener("click", () => {
-  showView("ownProfile");
-});
+document
+  .getElementById(
+    "ownProfileBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
+      showView(
+        "ownProfile"
+      );
+    }
+  );
 
-document.getElementById("mobileProfileBtn").addEventListener("click", () => {
-  showView("ownProfile");
-});
 
-document.getElementById("messagePreview").addEventListener("click", () => {
-  showView("messenger");
-});
+document
+  .getElementById(
+    "mobileProfileBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
+      showView(
+        "ownProfile"
+      );
+    }
+  );
 
-document.getElementById("openMessageBtn").addEventListener("click", () => {
-  showView("messenger");
-});
 
-document.getElementById("senderProfileBtn").addEventListener("click", () => {
-  showView("senderProfile");
-});
+document
+  .getElementById(
+    "messagePreview"
+  )
+  .addEventListener(
+    "click",
+    () => {
+      showView(
+        "messenger"
+      );
+    }
+  );
 
-document.getElementById("uploadTrigger").addEventListener("click", triggerUpload);
-document.getElementById("uploadTriggerLarge").addEventListener("click", triggerUpload);
 
-backBtn.addEventListener("click", () => {
-  if (currentView === "senderProfile") {
-    showView("messenger");
-  } else {
-    showView("home");
+document
+  .getElementById(
+    "openMessageBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
+      showView(
+        "messenger"
+      );
+    }
+  );
+
+
+document
+  .getElementById(
+    "senderProfileBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
+      showView(
+        "senderProfile"
+      );
+    }
+  );
+
+
+backBtn.addEventListener(
+  "click",
+  () => {
+
+    if (
+      currentView ===
+      "senderProfile"
+    ) {
+
+      showView(
+        "messenger"
+      );
+
+    } else {
+
+      showView(
+        "home"
+      );
+
+    }
+
   }
-});
+);
 
 
 /* =============================================================
