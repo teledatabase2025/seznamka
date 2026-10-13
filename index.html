@@ -1910,10 +1910,38 @@ Tvá Zlobivá Kočička.`
    VARIANTA PODLE URL
    ============================================================= */
 
+function getReturnUrl() {
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  return (
+    params.get("returnUrl") ||
+    params.get("returnurl") ||
+    ""
+  );
+}
+
+
 function getVariant() {
-  // Čteme celou URL, takže funguje spolehlivě i na GitHub Pages.
-  // Podporuje: ?seznamkaext1 / ?seznamkaext2 / ?seznamkaext3
-  const url = window.location.href.toLowerCase();
+  /*
+     Variantu umíme určit několika způsoby:
+
+     1) ?seznamkaext1 / ?seznamkaext2 / ?seznamkaext3
+     2) ?variant=1 / 2 / 3
+     3) podle návratového slidu v returnUrl
+
+        slide 163 = první vstup
+        slide 172 = druhý vstup
+        slide 180 = třetí vstup
+
+     Díky tomu fungují i odkazy ve tvaru:
+     ?returnUrl=http%3A%2F%2Flocalhost...%3Fslide%3D172
+  */
+
+  const url =
+    window.location.href.toLowerCase();
 
   if (url.includes("seznamkaext3")) {
     return 3;
@@ -1921,6 +1949,111 @@ function getVariant() {
 
   if (url.includes("seznamkaext2")) {
     return 2;
+  }
+
+  if (url.includes("seznamkaext1")) {
+    return 1;
+  }
+
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const explicitVariant =
+    params.get("variant");
+
+  if (
+    explicitVariant === "3"
+  ) {
+    return 3;
+  }
+
+  if (
+    explicitVariant === "2"
+  ) {
+    return 2;
+  }
+
+  if (
+    explicitVariant === "1"
+  ) {
+    return 1;
+  }
+
+
+  const returnUrl =
+    getReturnUrl();
+
+  if (returnUrl) {
+
+    try {
+
+      const parsedReturnUrl =
+        new URL(
+          returnUrl,
+          window.location.href
+        );
+
+      const slide =
+        Number(
+          parsedReturnUrl
+            .searchParams
+            .get("slide")
+        );
+
+      if (
+        slide ===
+        CONFIG.variants[3].exitSlide
+      ) {
+        return 3;
+      }
+
+      if (
+        slide ===
+        CONFIG.variants[2].exitSlide
+      ) {
+        return 2;
+      }
+
+      if (
+        slide ===
+        CONFIG.variants[1].exitSlide
+      ) {
+        return 1;
+      }
+
+    } catch (e) {
+
+      const match =
+        returnUrl.match(
+          /[?&]slide=(\d+)/i
+        );
+
+      if (match) {
+
+        const slide =
+          Number(match[1]);
+
+        if (
+          slide ===
+          CONFIG.variants[3].exitSlide
+        ) {
+          return 3;
+        }
+
+        if (
+          slide ===
+          CONFIG.variants[2].exitSlide
+        ) {
+          return 2;
+        }
+
+      }
+
+    }
+
   }
 
   return 1;
@@ -2567,11 +2700,16 @@ function applyConfig() {
       .exitSlide;
 
 
+  const suppliedReturnUrl =
+    getReturnUrl();
+
+
   document
     .getElementById(
       "exitSite"
     )
     .href =
+      suppliedReturnUrl ||
       `${CONFIG.gameBaseUrl}?slide=${exitSlide}`;
 }
 
