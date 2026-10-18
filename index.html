@@ -527,6 +527,7 @@ button{color:inherit}
 .detail-row span:first-child{color:#817988;font-size:13px}
 .detail-row span:last-child{color:#eee9f2;line-height:1.45}
 .mobile-profile{display:none}
+
 @media(max-width:760px){
   .app{
     width:100%;
@@ -567,6 +568,7 @@ button{color:inherit}
 }
 </style>
 </head>
+
 <body>
 <main class="app">
 
@@ -839,6 +841,7 @@ const replyField = $("replyField");
 const accessWarning = $("accessWarning");
 
 let currentView = "home";
+let introDismissed = false;
 
 /* AUTOMATICKÉ ZVĚTŠOVÁNÍ POLE BEZ POSUVNÍKU */
 function resizeReplyField() {
@@ -850,6 +853,9 @@ replyField.addEventListener("input", resizeReplyField);
 resizeReplyField();
 
 function showView(name) {
+  // Úvodní oznámení je dostupné pouze do prvního opuštění.
+  if (name === "home" && introDismissed) name = "messenger";
+  if (currentView === "home" && name !== "home") introDismissed = true;
   currentView = name;
 
   Object.values(views).forEach(view => {
@@ -867,7 +873,7 @@ function showView(name) {
   if (name === "messenger") {
     $("topbarTitle").textContent = "Konverzace";
     $("topbarSubtitle").textContent = CONFIG.senderProfile.nickname;
-    backBtn.classList.add("visible");
+    backBtn.classList.remove("visible");
     markAsRead();
     setTimeout(() => {
       messages.scrollTop = messages.scrollHeight;
@@ -1149,7 +1155,8 @@ $("senderProfileBtn").addEventListener("click", () => {
 });
 
 backBtn.addEventListener("click", () => {
-  if (currentView === "senderProfile") {
+  // Po opuštění úvodu se lze vracet jen do konverzace, nikoliv na oznámení.
+  if (introDismissed) {
     showView("messenger");
   } else {
     showView("home");
